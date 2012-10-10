@@ -1,0 +1,39 @@
+----
+JACK
+----
+
+Name:		Jack
+Author:		Andy "Boogieman" Craft
+Email:		boogieman10@hotmail.com
+
+Time spent:	about a week
+Editor:		Quake2 Model Editor v0.83
+Description:	Jack is a new player model for Quake2.
+		Basically, he is a psychotic jack-in-the-box.
+
+Installation:
+
+	Unzip all the files into a sundirectory called "jack" in your
+	players directory.  You can then select Jack in the player
+	setup menu in Quake 2.
+
+Skins:
+
+	Hey, I'm getting better at skins!  Even though I will probably
+	make more skins for Jack in the future, I still want to see
+	any skins you make, if you choose to do so.  Please send them
+	to the email address mentioned above.
+
+Sounds:
+
+	I wanted to include sounds with this model, but I'm not very
+	good at making them.  I may find time to make a sound pack to
+	go with Jack, but if you make one before I do, send it to the
+	email address mentioned above.
+
+Comments:
+
+	If you have any comments, please send them to the email address
+	mentioned above.
+
+Have fun with Jack!

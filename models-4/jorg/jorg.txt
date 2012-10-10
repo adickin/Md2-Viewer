@@ -1,0 +1,42 @@
+
+7/28/99
+=======================================================================
+Model Name:                    Jorg
+
+Installation directory:        quake2/baseq2/players/jorg
+
+Model description:             Boss from quake2
+
+Author of model:               {PST}DIEsector
+
+
+
+=======================================================================
+* Play Information *
+
+New sounds:                    yep
+
+Ctf skins:                     yep
+
+VWEP Support:                  nope
+
+
+Known bugs:                    none
+
+
+=======================================================================
+* Other Crap *
+
+Program used for skins:        Paint Shop Pro 5
+
+Build time:                    about 1 week 
+
+How to use model : Just extract to quake2/baseq2/players/jorg.
+
+
+Please redistribute this file as much as possible.
+
+
+
+
+

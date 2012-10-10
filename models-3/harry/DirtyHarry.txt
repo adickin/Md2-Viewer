@@ -1,0 +1,38 @@
+
+QUAKE2 PLUG-IN PLAYER MODEL	     	DIRTY HARRY                   07-03-1999
+
+Author:		Pedro "Dirty Harry" Mateus (aka Mudhoney)
+
+E-Mail:		mudpmcm@hotmail.com
+
+
+Files:		Harry.pcx -	The skin
+		Harry_i.pcx -   The Identifying picture thingie
+		Harry2.pcx -    Other skin
+		Harry2_i.pcx -  Its icon
+	        tris.md2 - 	The Dirty Harry player model, nothing new,
+				just a copy of the male model
+		weapon.md2 - 	The weapon
+		weapon.pcx -	the weapon's skin
+		A whole bunch of .wav's - Sounds from the San Francisco Bad Ass Cop
+		DirtyHarry.txt -Your reading it now
+		
+
+Instructions:	Just unzip all these files to "../quake2/baseq2/players/harry" 
+		
+
+Important: 	I am not responsible if you stuff this up, your actions are
+	   	your own and I take no responsability.
+
+
+DISCLAIMER:	Skin authors MAY NOT use this skin as a base for other skins
+		UNLESS I get an email saying what you wanna do, and a copy of
+		the finished product. This skin is available for free 
+		distribution via BBS, FTP, and other free electronic means. 
+		This skin MAY be included in any CD-ROM or other product 
+		whose sales earn profit for their publishers, as long as I 
+		get a copy.
+
+PS: 		I used Gateway's layout for this text file. His email address
+		is:
+			gateway@mobsters.com

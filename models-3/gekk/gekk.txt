@@ -1,0 +1,28 @@
+The Gekk Plug-in Player Model
+--------------------------------
+Author:Ryan C.
+E-mail:Bond007103@AOL.com
+About:A plug-in player model of the Gekk from the Quake2 Mission
+Pack #1.
+Additional Credits:Xatrix-the maker of the original Gekk
+
+Contents:Tris.md2-The model
+         Gekk.pcx
+         Gekk_i.pcx
+         Gekkpain1.pcx
+         Gekkpain1_i.pcx
+         Gekkpain2.pcx
+         Gekkpain2_i.pcx-The skins
+         Gekk.txt-the readme you're reading
+         Weapon.md2-the weapon model
+         weapon.pcx-the weapon skin
+         various .wavs-player sounds
+Installation-most people will just have to unzip it in their Quake 2 
+directory.If that doesn't work put them all in a sub-directory of your
+Quake 2 directory called "baseq2/players/gekk".  
+
+Legalities(is that a word?)
+----------------------------
+You can to whatever you want with it except dont blame me,
+disribute it with the gekk.txt always,and give me credit
+if you edit it.

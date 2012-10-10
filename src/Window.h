@@ -2,8 +2,9 @@
 #include <QWidget>
 #include <QtGui>
 #include "GLWidget.h"
+#include "SideBar.h"
 #include "ui_MainWindow.h"
-#include "ui_SideBar.h"
+
 
 class Window : public QMainWindow {
    Q_OBJECT
@@ -26,19 +27,10 @@ private:
 
    QToolBar* toolBar;
 
-   QFrame* frame_;
-   Ui::MainWindow mainWindow_;
+   Ui::MainWindow ui_;
 
-   QTabWidget* tabWidget_;
-   Ui::TabWidget sideBar_;
+   SideBar* sideBar_;
 
    QToolBar* toolBar_;
    
-   // QDockWidget* dock;
-   // QDockWidget* dock2;
-   // QDockWidget* dock3;
-
-   // QPushButton* button;
-   // QPushButton* button2;
-   // QPushButton* button3;
 };

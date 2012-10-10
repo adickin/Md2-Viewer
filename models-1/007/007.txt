@@ -1,0 +1,63 @@
+Title: 007
+Skin Author:  Erik Johnston
+Team leader:  The Demon God
+_-_-_Email :  the_demon_god@hotmail.com
+Published  :  July 26, 1998
+
+How to install the skin/model.
+
+If you don't know already, make a folder/directory called "007".  Unzip the 007.zip file
+into the directory, and then put the new folder under MYDRIVE:\quake2\baseq2\player\007.
+If you did this correctly, a new skin should be found under multiplayer/setup - enjoy!.
+
+
+
+-=-=-=-=-=-=-=-=-=-=-
+       007
+-=-=-=-=-=-=-=-=-=-=-
+
+This skin is one of many that is going to be included in a TC of Quake2.  Although,
+this skin isn't that impressive compared to the others, it is more a less a joke
+that would be better appreciated as a stand-alone skin then as a secret "joke" skin
+accessible within a much larger mod.  The TC of Quake2 is yet to be named, but
+so far the TC will include completely redone weapons, a total of sixteen, and will
+incorporate two races - humans and something else... as of right now, the "something
+else" lacks a good name.
+
+The hardest part of making this mod isn't with code, but rather with the models.  The
+revision to the code is really easy, with places like inside3d.com and Quake Devils, 
+enough help is granted through wonderful tutorials; coding soon becomes easier than
+making skins.  The models, however, are the true difficulty.  Of course, everyone
+wants better models - and with those FREE model tools, one is doomed to make only
+the worst models *hey, but they are free, right?*.  Only with the expensive tools can
+someone come up with a model as fast as a good piece of code - but where a good 
+compiler may cost $500, a good modeler costs over $3500!
+
+The TC that we are making also has a new feature: an AVI intro. However, the intro alone, 
+at a resolution of 640 by 480, takes up 150 megs of space. I don't know anyone 
+(except a few bored rednecks) that would download that.  I might just have to cut it
+into the postage stamp size intro that people are used to seeing in 1992 games.
+If anyone has any ideas, send email!
+
+
+-=-=-=-=-=-=-=-=-=-
+UNFORTUNATE UPDATE
+-=-=-=-=-=-=-=-=-=-
+
+Just to make this clear: The actual 007 model was cut out of this. I don't know why
+but the team I am working with are a bunch of asses, and want to keep everything
+in one place until the final release date.
+
+I took pieces from the 007 skin, and pasted in on the first model I could grab.
+Too bad it wasn't mine... ;}
+
+
+--------------------------------------
+NOTES/COMMENTS/SUGGESTIONS/IDEAS/HELP!
+--------------------------------------
+email: the_demon_god@hotmail.com
+IF you can make maps... WE NEED YOU! (No TC is good without new maps)
+
+
+
+

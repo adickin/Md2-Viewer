@@ -1,0 +1,45 @@
+8-23-98
+
+================================================================
+Model Name              : Yohko vwep.
+installation directory  : quake2/baseq2/players/Yohko
+Author                  : Frag-Me Elmo
+Email Address           : pianoman@ou.edu
+
+Additional Credits to   : id Software, Hentai, Brian "EvilBastard" Collins
+
+Thanks to               : id Software, Hentai, Nemesis
+================================================================
+* Play Information *
+
+New Sounds              : <NO>
+CTF Skins               : <NO>
+VWEP Support            : <YES>
+
+* How to use this model *
+
+place it into your Yohko models dir and then load q2 normally it should work fine
+if not your a yobbo.
+
+* Construction *
+
+Editors Used	: 3DStudio Max, Q2Modeller
+
+* Other Info *
+
+This is my first time to experiment with Quake programming so go easy on me.
+This was basically just an experiment to see if i could actually get it to work
+because i was planning on making my own model and making it vwep compatible. 
+Once i got the first one working i thought what the hell i'll go ahead and finish
+it out.  It took for freaking ever tho because i couldn't get crap to work right, 
+i had to end up importing and exporting all the frames of animation individually
+as well as placing the weapons right to follow the model's animation.  
+The original model uses a sword so some of the bigger weapons like the rocket 
+launcher intersect into the body on some frames.. i couldn't help this.  Also her 
+hand was really small which made it a pain in the @$$ to place the weapon handles
+right.  But other than that, hell, at least you can tell which weapon she has now!
+
+* Copyright / Permissions *
+
+I dont give a crap what you do with this just give me credit where credit is due.
+QUAKE(R) and QUAKE II(R) are registered trademarks of id Software, Inc.

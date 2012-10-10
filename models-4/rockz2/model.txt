@@ -1,0 +1,83 @@
+
+
+Thursday,June 4,1998
+
+================================================================
+
+Model Name              : rockz
+installation directory  : quake2/baseq2/players/Rockz
+Author                  : Nick Pike  (Wild Karrde)
+Skin Author : Same as Author
+
+Email Address           : riven_myst@hotmail.com
+
+
+Model description       : A futuristic,kind of weird model
+
+
+
+
+
+Other info              : No other info
+
+
+Additional Credits to   : id Software,Npherno
+
+
+
+Thanks to               : None
+
+================================================================
+
+* Play Information *
+
+
+
+New Sounds              : YES
+
+CTF Skins               : YES
+
+VWEP Support            : YES
+
+
+
+
+
+* Construction *
+
+Poly Count              : 590 polys
+
+Vert Count              : 315 Verts
+
+Skin Count              : 7 skins
+
+Base                    : modified exsisting model
+
+Editor used             : Npherno's skin tool
+Known Bugs              : None
+
+Build/Animation time    : 5 Hours
+
+
+
+
+
+* How to use this model *
+
+
+
+Install to /baseq2/players/rockz
+
+
+
+No Copyright
+
+
+QUAKE(R) and QUAKE II(R) are registered trademarks of id Software, Inc.
+
+
+
+No Legal Crap 
+
+
+

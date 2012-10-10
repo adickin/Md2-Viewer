@@ -1,11 +1,20 @@
 
-#ifndef SIDEBAR
-#define SIDEBAR
+#ifndef SIDEBAR_H
+#define SIDEBAR_H
 
-class SideBar
+#include <QWidget>
+#include "ui_SideBar.h"
+
+class SideBar : public QWidget
 {
+   Q_OBJECT
+
 public:
-	SideBar();
+	SideBar( QWidget* parent = NULL);
 	~SideBar();
 
+private:
+   Ui::SideBar ui_;
 };
+
+#endif

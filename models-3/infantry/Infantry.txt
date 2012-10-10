@@ -1,0 +1,41 @@
+Quake2 Mod  12/19/97
+================================================================
+Title                   : Infantry Model
+Author                  : Manfred Nerurkar
+Email Address           : MNeru@aol.com
+File Name		: Infantry.zip
+Description             : Players can now use the Infantry Model
+			  as Player.  Including new Frames.
+			  
+Additional Credits to   : Everyone at ID
+               
+================================================================
+
+* Play Information *
+
+Single Player           : Yes
+Deathmatch              : Yes
+New Sounds              : No 
+New Graphics            : Yes 
+New Music               : No 
+
+* Construction *
+
+Base                    : Id Softwares Model
+Editor(s) used          : Quake 2 Model Editor 0.83
+Known Bugs              : Salute and Wave don't work
+Version			: 0.9
+Build Time              : Approx. 6 hours
+
+* Install Instructions *
+
+1) Make a dir in your Player Dir called Infantry
+   (i.e.d:\quake2\baseq2\players\infantry)
+2) Copy all Files from the Zip in this Directory
+3) Run Quake 2
+
+* Legal Stuff *
+
+By using this patch, the author is not responsible if *anything*
+should happen to your computer.  If you would like the code to this
+modification please feel free to send me an e-mail.

@@ -16,6 +16,10 @@ UI_DIR = ./.ui
 
 # Input
 HEADERS +=  src/GLWidget.h \
-            src/Window.h
-SOURCES += src/GLWidget.cpp src/main.cpp src/Window.cpp
+            src/Window.h \
+            src/SideBar.h
+SOURCES +=  src/GLWidget.cpp \
+            src/main.cpp \
+            src/Window.cpp \
+            src/SideBar.cpp
 FORMS += src/SideBar.ui src/MainWindow.ui
