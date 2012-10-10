@@ -3,13 +3,19 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = 
+TARGET = MD2Viewer
 DEPENDPATH += .
 INCLUDEPATH += .
 QT += opengl
 LIBS += -lGLU -lglut
 
+OBJECTS_DIR = ./.obj
+MOC_DIR = ./.moc
+UI_DIR = ./.ui
+
+
 # Input
-HEADERS += GLWidget.h Window.h
-SOURCES += GLWidget.cpp main.cpp Window.cpp
-FORMS += SideBar.ui MainWindow.ui
+HEADERS +=  src/GLWidget.h \
+            src/Window.h
+SOURCES += src/GLWidget.cpp src/main.cpp src/Window.cpp
+FORMS += src/SideBar.ui src/MainWindow.ui

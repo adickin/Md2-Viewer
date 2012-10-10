@@ -1,4 +1,4 @@
 assignment2
 ===========
 
-cpsc453 assignment2
+THIS IS the readme
