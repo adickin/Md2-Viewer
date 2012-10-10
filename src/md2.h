@@ -30,14 +30,14 @@ typedef float vec3_t[3];
 typedef struct
 {
    int      id;               // magic number. must be equal to "IPD2"
-   int      version;       // md2 version. must be equal to 8
+   int      version;          // md2 version. must be equal to 8
 
    int      skinwidth;        // width of the texture
    int      skinheight;       // height of the texture
    int      framesize;        // size of one frame in bytes
 
    int      num_skins;        // number of textures
-   int      num_xyz;       // number of vertices
+   int      num_xyz;          // number of vertices
    int      num_st;           // number of texture coordinates
    int      num_tris;         // number of triangles
    int      num_glcmds;       // number of opengl commands
@@ -48,7 +48,7 @@ typedef struct
    int      ofs_tris;         // offset to triangles
    int      ofs_frames;       // offset to frame data
    int      ofs_glcmds;       // offset to opengl commands
-   int      ofs_end;       // offset to the end of file
+   int      ofs_end;          // offset to the end of file
 
 } md2_t;
 

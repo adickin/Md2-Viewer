@@ -1,7 +1,10 @@
-#include <QGLWidget>
 
 #ifndef MYGLWIDGET
 #define MYGLWIDGET
+
+#include <QGLWidget>
+#include "md2.h"
+
 
 class GLWidget : public QGLWidget {
     Q_OBJECT
@@ -21,6 +24,10 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
     void wheelEvent(QWheelEvent *event);
+
+private:
+    MD2 md2Reader_;
 };
 
 #endif
+

@@ -10,8 +10,8 @@ class SideBar : public QWidget
    Q_OBJECT
 
 public:
-	SideBar( QWidget* parent = NULL);
-	~SideBar();
+   SideBar( QWidget* parent = NULL);
+   ~SideBar();
 
 private:
    Ui::SideBar ui_;

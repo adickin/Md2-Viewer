@@ -10,8 +10,5 @@ int main (int argc, char **argv) {
     w->resize(800, 500);            // Set the window to 500x500
     w->show();                   // Show the window
 
-    // QMainWindow* mainWindow = new QMainWindow();
-    // Ui::MainWindow* window = new Ui::MainWindow();
-    // window->setupUi(mainWindow);
     return app.exec();              // Pass control to QT
 }
