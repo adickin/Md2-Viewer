@@ -1,5 +1,7 @@
-#include "Window.h"
 
+#include <QString>
+
+#include "Window.h"
 
 Window::Window(QWidget *parent) : QMainWindow(parent) 
 {
@@ -48,5 +50,12 @@ void Window::setupSignalsAndSlots()
 
 void Window::postSuccessMessageToScreen(bool success)
 {
-   
+   if(success)
+   {
+      sideBar_->setLoadLabelText(QString("File Loaded Successfully"));
+   }
+   else
+   {
+      sideBar_->setLoadLabelText(QString("File Load Error"));  
+   }
 }

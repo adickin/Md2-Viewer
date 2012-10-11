@@ -6,14 +6,15 @@
 GLWidget::GLWidget(QWidget *parent) : QGLWidget (parent) 
 {
     scale = 1;
-    bool loadSucessful = md2Reader_.LoadModel("./models-5/stormtrooper/stormtrooperweapon.md2");
+    bool loadSuccessful = md2Reader_.LoadModel("./models-5/stormtrooper/stormtrooperweapon.md2");
 
-    emit fileLoadSuccess(loadSucessful);
+    emit fileLoadSuccess(loadSuccessful);
 }
 
 GLWidget::~GLWidget() { }
 
-void GLWidget::initializeGL() {
+void GLWidget::initializeGL() 
+{
     glClearColor(1.0,1.0,1.0,1.0);
 
     glEnable(GL_DEPTH_TEST);

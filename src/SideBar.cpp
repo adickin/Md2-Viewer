@@ -10,3 +10,8 @@ SideBar::~SideBar()
 {
 
 }
+
+void SideBar::setLoadLabelText(const QString& newText)
+{
+   ui_.wFileLoadLabel->setText(newText);
+}
