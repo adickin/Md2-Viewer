@@ -5,7 +5,13 @@
 #include "SideBar.h"
 #include "ui_MainWindow.h"
 
-
+/*
+***************************************************************
+*
+*   
+*
+***************************************************************
+*/
 class Window : public QMainWindow {
    Q_OBJECT
 
@@ -14,23 +20,16 @@ public:
    ~Window();
 
 public slots:
+   void postSuccessMessageToScreen(bool success);
 
-private slots:
+private://methods
+   void interfaceSetup();
+   void setupSignalsAndSlots();
 
-private:
-   GLWidget* widget;
-
-   QMenuBar* menuBar;
-   QMenu* fileMenu;
-
-   QStatusBar* statusBar;
-
-   QToolBar* toolBar;
-
+private://members
+   GLWidget* glWidget_;
+   QToolBar* toolBar_;
    Ui::MainWindow ui_;
-
    SideBar* sideBar_;
 
-   QToolBar* toolBar_;
-   
 };

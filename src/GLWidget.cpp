@@ -7,11 +7,8 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget (parent)
 {
     scale = 1;
     bool loadSucessful = md2Reader_.LoadModel("./models-5/stormtrooper/stormtrooperweapon.md2");
-    if(!loadSucessful)
-    {
-        fprintf(stderr, "getting here\n");
-        //fprintf(stderr, "verticies: %d, triangles %d\n, frames %d", md2Reader_.num_xyz, md2Reader_.num_tris, md2Reader_.num_frames);
-    }
+
+    emit fileLoadSuccess(loadSucessful);
 }
 
 GLWidget::~GLWidget() { }
@@ -21,9 +18,6 @@ void GLWidget::initializeGL() {
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHT0);
-
-    //GLfloat position[] = { 0,1,-1,1 };
-    //glLightfv(GL_LIGHT0, GL_POSITION, position);
 }
 
 void GLWidget::resizeGL(int width, int height) {
@@ -48,9 +42,8 @@ void GLWidget::resizeGL(int width, int height) {
     glMatrixMode(GL_MODELVIEW);
 }
 
-void GLWidget::paintGL() {
-    // GLUquadricObj *q = gluNewQuadric();
-
+void GLWidget::paintGL() 
+{
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);   
 
     glLoadIdentity();
@@ -61,20 +54,11 @@ void GLWidget::paintGL() {
     for (int i = 0; i < md2Reader_.num_tris; ++i)
     {
         triangle_t triangle = md2Reader_.tris[i];
+
         short vertexOne = triangle.index_xyz[0];
         short vertexTwo = triangle.index_xyz[1];
         short vertexThree = triangle.index_xyz[2];
-        // fprintf(stderr, "%f\n", md2Reader_.m_vertices[vertexOne][0]);
-        // fprintf(stderr, "%f\n", md2Reader_.m_vertices[vertexOne][1]);
-        // fprintf(stderr, "%f\n\n", md2Reader_.m_vertices[vertexOne][2]);
 
-        // fprintf(stderr, "%f\n", md2Reader_.m_vertices[vertexTwo][0]);
-        // fprintf(stderr, "%f\n", md2Reader_.m_vertices[vertexTwo][1]);
-        // fprintf(stderr, "%f\n\n", md2Reader_.m_vertices[vertexTwo][2]);
-
-        // fprintf(stderr, "%f\n", md2Reader_.m_vertices[vertexThree][0]);
-        // fprintf(stderr, "%f\n", md2Reader_.m_vertices[vertexThree][1]);
-        // fprintf(stderr, "%f\n\n", md2Reader_.m_vertices[vertexThree][2]);
         glVertex3f(md2Reader_.m_vertices[vertexOne][0],
             md2Reader_.m_vertices[vertexOne][1],
             md2Reader_.m_vertices[vertexOne][2]);
@@ -97,44 +81,6 @@ void GLWidget::paintGL() {
             md2Reader_.m_vertices[vertexThree][2]);
     }
     glEnd();
-
-    // glBegin(GL_TRIANGLES);
-    // for (int i = 0; i < md2Reader_.num_tris; ++i)
-    // {
-    //     triangle_t triangle = md2Reader_.tris[i];
-    //     short vertexOne = triangle.index_xyz[0];
-    //     short vertexTwo = triangle.index_xyz[1];
-    //     short vertexThree = triangle.index_xyz[2];
-    //     // fprintf(stderr, "%f\n", md2Reader_.m_vertices[vertexOne][0]);
-    //     // fprintf(stderr, "%f\n", md2Reader_.m_vertices[vertexOne][1]);
-    //     // fprintf(stderr, "%f\n\n", md2Reader_.m_vertices[vertexOne][2]);
-
-    //     // fprintf(stderr, "%f\n", md2Reader_.m_vertices[vertexTwo][0]);
-    //     // fprintf(stderr, "%f\n", md2Reader_.m_vertices[vertexTwo][1]);
-    //     // fprintf(stderr, "%f\n\n", md2Reader_.m_vertices[vertexTwo][2]);
-
-    //     // fprintf(stderr, "%f\n", md2Reader_.m_vertices[vertexThree][0]);
-    //     // fprintf(stderr, "%f\n", md2Reader_.m_vertices[vertexThree][1]);
-    //     // fprintf(stderr, "%f\n\n", md2Reader_.m_vertices[vertexThree][2]);
-    //     glVertex3f(md2Reader_.m_vertices[vertexOne][0],
-    //         md2Reader_.m_vertices[vertexOne][1],
-    //         md2Reader_.m_vertices[vertexOne][2]);
-    //     glVertex3f(md2Reader_.m_vertices[vertexTwo][0],
-    //         md2Reader_.m_vertices[vertexTwo][1],
-    //         md2Reader_.m_vertices[vertexTwo][2]);
-    //     glVertex3f(md2Reader_.m_vertices[vertexThree][0],
-    //         md2Reader_.m_vertices[vertexThree][1],
-    //         md2Reader_.m_vertices[vertexThree][2]);
-    // }
-    // glEnd();
-
-    //glColor3f(0.0, 0.0, 0.0);
-    // //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    // //glRotated(30, 0, 1, 0);
-    // glTranslated(x,-y,0);
-    // glScaled(scale,scale,scale);
-
-    // gluSphere(q, 0.2, 12, 12);
     
     glFlush();
 }

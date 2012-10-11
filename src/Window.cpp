@@ -3,21 +3,50 @@
 
 Window::Window(QWidget *parent) : QMainWindow(parent) 
 {
+   interfaceSetup();
+   setupSignalsAndSlots();
+}
+
+Window::~Window() 
+{
+}
+
+/*
+***************************************************************
+*
+*   sets up all items that appear in the GUI.
+*
+***************************************************************
+*/
+void Window::interfaceSetup()
+{
+   setWindowTitle("Model Viewer");
    ui_.setupUi(this);
 
-   widget = new GLWidget(this);              // Initialize the GL Widget
-   setCentralWidget(widget);                 // This is the main part of the interface, so set it as the central widget of the window
-   widget->setFocus();                       // Set focus to capture keyboard and mouse events
-   
+   glWidget_ = new GLWidget(this);
+   setCentralWidget(glWidget_);
+   glWidget_->setFocus();
+
    toolBar_ = new QToolBar(this);
-
-   addToolBar(Qt::LeftToolBarArea, toolBar_);
-
    sideBar_ = new SideBar();
    sideBar_->setVisible(true);
    toolBar_->addWidget(sideBar_);
-   
-   setWindowTitle("Model Viewer");                  // Set the title of the window to be "Hello QT"
+   addToolBar(Qt::LeftToolBarArea, toolBar_);
 }
 
-Window::~Window() { }
+/*
+***************************************************************
+*
+*   Sets up all signals and slots for this class.
+*
+***************************************************************
+*/
+void Window::setupSignalsAndSlots()
+{
+   connect(glWidget_, SIGNAL(fileLoadSuccess(bool)), this, SLOT(postSuccessMessageToScreen(bool)));
+}
+
+void Window::postSuccessMessageToScreen(bool success)
+{
+   
+}

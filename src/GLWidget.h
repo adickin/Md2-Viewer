@@ -13,6 +13,9 @@ public:
     GLWidget(QWidget *parent);
     ~GLWidget();
 
+signals:
+    void fileLoadSuccess(bool sucess);
+
 protected:
    float x, y, scale;
    float width, height;
