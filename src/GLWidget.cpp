@@ -1,12 +1,14 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
+#include <QString>
 #include "GLWidget.h"
 #include <GL/glut.h>
 
 GLWidget::GLWidget(QWidget *parent) : QGLWidget (parent) 
 {
     scale = 1;
-    bool loadSuccessful = md2Reader_.LoadModel("./models-5/stormtrooper/stormtrooperweapon.md2");
+    QString fileName("./models-5/stormtrooper/stormtrooperweapon.md2");
+    bool loadSuccessful = md2Reader_.loadModelFromFile(fileName);
 
     emit fileLoadSuccess(loadSuccessful);
 }
@@ -45,45 +47,12 @@ void GLWidget::resizeGL(int width, int height) {
 
 void GLWidget::paintGL() 
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);   
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);   
+   glLoadIdentity();
 
-    glLoadIdentity();
-
-    glColor3f(0.0, 0.0, 1.0);
-
-    glBegin(GL_LINES);
-    for (int i = 0; i < md2Reader_.num_tris; ++i)
-    {
-        triangle_t triangle = md2Reader_.tris[i];
-
-        short vertexOne = triangle.index_xyz[0];
-        short vertexTwo = triangle.index_xyz[1];
-        short vertexThree = triangle.index_xyz[2];
-
-        glVertex3f(md2Reader_.m_vertices[vertexOne][0],
-            md2Reader_.m_vertices[vertexOne][1],
-            md2Reader_.m_vertices[vertexOne][2]);
-        glVertex3f(md2Reader_.m_vertices[vertexTwo][0],
-            md2Reader_.m_vertices[vertexTwo][1],
-            md2Reader_.m_vertices[vertexTwo][2]);
-
-        glVertex3f(md2Reader_.m_vertices[vertexOne][0],
-            md2Reader_.m_vertices[vertexOne][1],
-            md2Reader_.m_vertices[vertexOne][2]);
-        glVertex3f(md2Reader_.m_vertices[vertexThree][0],
-            md2Reader_.m_vertices[vertexThree][1],
-            md2Reader_.m_vertices[vertexThree][2]);
-
-        glVertex3f(md2Reader_.m_vertices[vertexTwo][0],
-            md2Reader_.m_vertices[vertexTwo][1],
-            md2Reader_.m_vertices[vertexTwo][2]);
-        glVertex3f(md2Reader_.m_vertices[vertexThree][0],
-            md2Reader_.m_vertices[vertexThree][1],
-            md2Reader_.m_vertices[vertexThree][2]);
-    }
-    glEnd();
+   drawWireFrame();
     
-    glFlush();
+   glFlush();
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event) {
@@ -115,4 +84,35 @@ void GLWidget::wheelEvent(QWheelEvent *event) {
 
         updateGL();
     }
+}
+
+void GLWidget::drawWireFrame()
+{
+   glColor3f(0.0, 0.0, 1.0);
+
+   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+   glBegin(GL_TRIANGLES);
+   for (int i = 0; i < md2Reader_.numberOfTriangles(); ++i)
+   {
+      int indexOne = 0;
+      int indexTwo = 0;
+      int indexThree = 0;
+      md2Reader_.retrieveTriangleVertexIndicies(i, &indexOne,
+                                              &indexTwo, &indexThree);
+
+      VertexCoordinate vertexOne = md2Reader_.retrieveVertexCoordinatesAt(indexOne);
+      VertexCoordinate vertexTwo = md2Reader_.retrieveVertexCoordinatesAt(indexTwo);
+      VertexCoordinate vertexThree = md2Reader_.retrieveVertexCoordinatesAt(indexThree);
+
+      glVertex3f(vertexOne.x,
+         vertexOne.y,
+         vertexOne.z);
+      glVertex3f(vertexTwo.x,
+         vertexTwo.y,
+         vertexTwo.z);
+      glVertex3f(vertexThree.x,
+         vertexThree.y,
+         vertexThree.z);
+   }
+   glEnd();
 }

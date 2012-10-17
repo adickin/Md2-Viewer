@@ -20,14 +20,16 @@ HEADERS +=  src/GLWidget.h \
             src/SideBar.h \
             src/Pcx.h \
             src/BMP.h \
-            src/md2.h
+            src/md2.h \
+            src/MD2Wrapper.h
             
 SOURCES +=  src/GLWidget.cpp \
             src/main.cpp \
             src/Window.cpp \
             src/SideBar.cpp \
             src/md2.cpp \
-            src/pcx.cpp
+            src/pcx.cpp \
+            src/MD2Wrapper.cpp
 
 FORMS +=    src/SideBar.ui \
             src/MainWindow.ui

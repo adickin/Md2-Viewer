@@ -30,9 +30,9 @@
        <bool>true</bool>
       </property>
       <attribute name="title">
-       <string>Random</string>
+       <string>Load</string>
       </attribute>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>10</x>

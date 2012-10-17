@@ -3,7 +3,7 @@
 #define MYGLWIDGET
 
 #include <QGLWidget>
-#include "md2.h"
+#include "MD2Wrapper.h"
 
 
 class GLWidget : public QGLWidget {
@@ -29,7 +29,9 @@ protected:
     void wheelEvent(QWheelEvent *event);
 
 private:
-    MD2 md2Reader_;
+    void drawWireFrame();
+private:
+    MD2Wrapper md2Reader_;
 };
 
 #endif

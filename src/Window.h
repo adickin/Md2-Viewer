@@ -1,4 +1,7 @@
-#pragma once
+
+#ifndef WINDOW_H
+#define WINDOW_H
+
 #include <QWidget>
 #include <QtGui>
 #include "GLWidget.h"
@@ -26,10 +29,16 @@ private://methods
    void interfaceSetup();
    void setupSignalsAndSlots();
 
-private://members
+private slots://members
+   void exitApplication(bool exit);
+
+private:
+
    GLWidget* glWidget_;
    QToolBar* toolBar_;
    Ui::MainWindow ui_;
    SideBar* sideBar_;
 
 };
+
+#endif
