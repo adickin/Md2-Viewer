@@ -71,16 +71,7 @@ void Window::setupSignalsAndSlots()
 
 void Window::postSuccessMessageToScreen(bool success)
 {
-   // if(success)
-   // {
-   //    sideBar_->setLoadLabelText(QString("File Loaded Successfully"));
-   // }
-   // else
 
-
-   // {
-   //    sideBar_->setLoadLabelText(QString("File Load Error"));  
-   // }
 }
 
 void Window::openBrowseMd2FileBrowser()
