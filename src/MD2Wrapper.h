@@ -29,6 +29,16 @@ struct TextureCoordinate
    float v;
 };
 
+struct Dimensions
+{
+   int minX;
+   int maxX;
+   int minY;
+   int maxY;
+   int minZ;
+   int maxZ;
+};
+
 class MD2Wrapper
 {
 public:
@@ -41,6 +51,7 @@ public:
    int numberOfTriangles() const;
    int skinWidth() const;
    int skinHeight() const;
+   Dimensions dimensions();
 
    VertexCoordinate retrieveVertexCoordinatesAt(const int index);
    TextureCoordinate retrieveTextureCoordinateAt(const int index);
@@ -49,6 +60,8 @@ public:
    void retrieveTriangleTextureIndicies(const int index, int* x, int* y, int* z);
 
 private:
+   void determineDimensions();
+   Dimensions md2ImageDimensions_;
    MD2* md2Reader_; 
 };
 

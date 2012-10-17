@@ -13,12 +13,14 @@ public:
     GLWidget(QWidget *parent);
     ~GLWidget();
 
+public slots:
+    void openMd2File(QString& filePath);
+
 signals:
     void fileLoadSuccess(bool sucess);
 
 protected:
    float x, y, scale;
-   float width, height;
 
     void initializeGL();
     void resizeGL(int width, int height);
@@ -30,8 +32,14 @@ protected:
 
 private:
     void drawWireFrame();
+
+    void updateOrthoMatrix();
 private:
     MD2Wrapper md2Reader_;
+
+    int windowWidth_;
+    int windowHeight_;
+
 };
 
 #endif

@@ -13,7 +13,9 @@ MD2Wrapper::~MD2Wrapper()
 
 bool MD2Wrapper::loadModelFromFile(QString& fileName)
 {
-   return md2Reader_->LoadModel(fileName.toAscii().constData());
+   bool success = md2Reader_->LoadModel(fileName.toAscii().constData());
+   determineDimensions();
+   return success;
 }
 
 int MD2Wrapper::numberOfFrames() const
@@ -39,6 +41,11 @@ int MD2Wrapper::skinWidth() const
 int MD2Wrapper::skinHeight() const
 {
    return md2Reader_->skin_height;
+}
+
+Dimensions MD2Wrapper::dimensions()
+{
+   return md2ImageDimensions_;
 }
 
 VertexCoordinate MD2Wrapper::retrieveVertexCoordinatesAt(const int index)
@@ -74,4 +81,48 @@ void MD2Wrapper::retrieveTriangleTextureIndicies(const int index, int* x, int* y
    *x = md2Reader_->tris[index].index_st[0];
    *y = md2Reader_->tris[index].index_st[1];
    *z = md2Reader_->tris[index].index_st[2];
+}
+
+void MD2Wrapper::determineDimensions()
+{
+   md2ImageDimensions_.minX = 0;
+   md2ImageDimensions_.maxX = 0;
+   md2ImageDimensions_.minY = 0;
+   md2ImageDimensions_.maxY = 0;
+   md2ImageDimensions_.minZ = 0;
+   md2ImageDimensions_.maxZ = 0;
+   for(int i = 0; i < numberOfVertices(); i++)
+   {
+      VertexCoordinate vertex = retrieveVertexCoordinatesAt(i);
+
+      if(vertex.x < md2ImageDimensions_.minX)
+      {
+         md2ImageDimensions_.minX = vertex.x;
+      }
+      else if(vertex.x > md2ImageDimensions_.maxX)
+      {
+         md2ImageDimensions_.maxX = vertex.x;
+      }
+
+      if(vertex.y < md2ImageDimensions_.minY)
+      {
+         md2ImageDimensions_.minY = vertex.y;
+      }
+      else if(vertex.y > md2ImageDimensions_.maxY)
+      {
+         md2ImageDimensions_.maxY = vertex.y;
+      }
+
+      if(vertex.z < md2ImageDimensions_.minZ)
+      {
+         md2ImageDimensions_.minZ = vertex.z;
+      }
+      else if(vertex.z > md2ImageDimensions_.maxZ)
+      {
+         md2ImageDimensions_.maxZ = vertex.z;
+      }
+   }
+   fprintf(stderr, "%d, %d, %d, %d, %d, %d\n",md2ImageDimensions_.minX, md2ImageDimensions_.maxX
+                                             ,md2ImageDimensions_.minY, md2ImageDimensions_.maxY
+                                             ,md2ImageDimensions_.minZ, md2ImageDimensions_.maxZ);
 }

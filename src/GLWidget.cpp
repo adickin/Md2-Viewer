@@ -6,33 +6,36 @@
 
 GLWidget::GLWidget(QWidget *parent) : QGLWidget (parent) 
 {
-    scale = 1;
-    QString fileName("./models-5/stormtrooper/stormtrooperweapon.md2");
-    bool loadSuccessful = md2Reader_.loadModelFromFile(fileName);
-
-    emit fileLoadSuccess(loadSuccessful);
+   setMinimumSize(500, 500);
+   scale = 1;
 }
 
 GLWidget::~GLWidget() { }
 
 void GLWidget::initializeGL() 
 {
-    glClearColor(1.0,1.0,1.0,1.0);
+   glClearColor(1.0,1.0,1.0,1.0);
 
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHT0);
+   glEnable(GL_DEPTH_TEST);
+   glEnable(GL_LIGHT0);
 }
 
-void GLWidget::resizeGL(int width, int height) {
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
+void GLWidget::resizeGL(int width, int height) 
+{
+   glMatrixMode(GL_PROJECTION);
+   glLoadIdentity();
 
-    this->width = width;
-    this->height = height;
+   windowWidth_ = width;
+   windowHeight_ = height;
 
-    glViewport(0,0,width, height);
+   glViewport(0,0,width, height);
 
-    glOrtho(-10, 10, -10, 10, -20, 20);
+   //Dimensions dimensions = md2Reader_.dimensions();
+   // glOrtho(dimensions.minX, dimensions.maxX,
+   //          dimensions.minY, dimensions.maxY,
+   //          dimensions.minZ, dimensions.maxZ);
+
+
     //float ratio;
     // if (width > height) {
     //     ratio = (float)width/(float)height;
@@ -42,7 +45,14 @@ void GLWidget::resizeGL(int width, int height) {
     //     glOrtho(-1, 1, -ratio, ratio, -1, 1);
     // }
 
-    glMatrixMode(GL_MODELVIEW);
+   // glLoadIdentity();
+   gluPerspective(45, 1.0, 0.1, 100);
+
+   glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
+   gluLookAt(0, 0, md2Reader_.dimensions().maxZ*2,
+            0, 0, 0,
+            0, 1, 0);
 }
 
 void GLWidget::paintGL() 
@@ -55,35 +65,49 @@ void GLWidget::paintGL()
    glFlush();
 }
 
-void GLWidget::mousePressEvent(QMouseEvent *event) {
-    if (event->button() == Qt::MidButton) {
-        close();
-    }
+void GLWidget::mousePressEvent(QMouseEvent *event) 
+{
+   if (event->button() == Qt::MidButton) 
+   {
+      close();
+   }
 }
 
-void GLWidget::mouseMoveEvent(QMouseEvent *event) {
-    x = event->x();
-    y = event->y();
+void GLWidget::mouseMoveEvent(QMouseEvent *event) 
+{
+   x = event->x();
+   y = event->y();
 
-    x = ((x-(width/2.0))/width)*2.0;
-    y = ((y-(height/2.0))/height)*2.0;
+   x = ((x-(windowWidth_/2.0))/windowWidth_)*2.0;
+   y = ((y-(windowHeight_/2.0))/windowHeight_)*2.0;
 
-    updateGL();
+   updateGL();
 }
 
-void GLWidget::keyPressEvent(QKeyEvent *event) {
-    if (event->key() == Qt::Key_Q) {
-        close();
-    }
+void GLWidget::keyPressEvent(QKeyEvent *event) 
+{
+   if (event->key() == Qt::Key_Q) 
+   {
+      close();
+   }
 }
 
-void GLWidget::wheelEvent(QWheelEvent *event) {
-    if (event->orientation() == Qt::Vertical) {
-        if (event->delta() > 0) scale += 0.1;
-        else scale -= 0.1;
+void GLWidget::wheelEvent(QWheelEvent *event) 
+{
+   if (event->orientation() == Qt::Vertical) 
+   {
+      if (event->delta() > 0) scale += 0.1;
+      else scale -= 0.1;
 
-        updateGL();
-    }
+      updateGL();
+   }
+}
+
+void GLWidget::openMd2File(QString& filePath)
+{
+   bool loadSuccessful = md2Reader_.loadModelFromFile(filePath);
+   resizeGL(windowWidth_, windowHeight_);
+   emit fileLoadSuccess(loadSuccessful);
 }
 
 void GLWidget::drawWireFrame()

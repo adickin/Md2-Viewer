@@ -11,7 +11,12 @@ SideBar::~SideBar()
 
 }
 
-void SideBar::setLoadLabelText(const QString& newText)
+void SideBar::setCurrentMd2FileLabel(const QString& newText)
 {
-   ui_.wFileLoadLabel->setText(newText);
+   ui_.currentMd2File->setText(newText);
+}
+
+QPushButton* SideBar::md2LoadButton() const
+{
+   return ui_.md2OpenButton;
 }

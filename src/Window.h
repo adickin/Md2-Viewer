@@ -6,7 +6,6 @@
 #include <QtGui>
 #include "GLWidget.h"
 #include "SideBar.h"
-#include "ui_MainWindow.h"
 
 /*
 ***************************************************************
@@ -30,13 +29,22 @@ private://methods
    void setupSignalsAndSlots();
 
 private slots://members
+   void openBrowseMd2FileBrowser();
    void exitApplication(bool exit);
 
 private:
 
+//Menu Bar
+   QMenuBar* menuBar_;
+   QMenu* fileMenu_;
+   QAction* saveAction_;
+   QAction* quitAction_;
+
+//Layouts
+   QWidget* centralWidget_;
+   QHBoxLayout* horizontalLayout_;
+
    GLWidget* glWidget_;
-   QToolBar* toolBar_;
-   Ui::MainWindow ui_;
    SideBar* sideBar_;
 
 };

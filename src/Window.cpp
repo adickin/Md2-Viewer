@@ -3,7 +3,8 @@
 
 #include "Window.h"
 
-Window::Window(QWidget *parent) : QMainWindow(parent) 
+Window::Window(QWidget *parent) 
+:QMainWindow(parent) 
 {
    interfaceSetup();
    setupSignalsAndSlots();
@@ -24,21 +25,35 @@ void Window::interfaceSetup()
 {
    setWindowTitle("Model Viewer");
 
+   //Menu Bar
+   menuBar_ = new QMenuBar(this);
+   menuBar_->setGeometry(QRect(0, 0, 810, 26));
+   fileMenu_ = new QMenu(menuBar_);
+   fileMenu_->setTitle(QString("File"));
+   setMenuBar(menuBar_);
+
+   saveAction_ = new QAction(this);
+   saveAction_->setText(QString("Save"));
+   quitAction_ = new QAction(this);
+   quitAction_->setText(QString("Quit"));
+   menuBar_->addAction(fileMenu_->menuAction());
+   fileMenu_->addAction(saveAction_);
+   fileMenu_->addAction(quitAction_);
+
+   centralWidget_ = new QWidget(this);
+   horizontalLayout_ = new QHBoxLayout(centralWidget_);
+
+   glWidget_ = new GLWidget(centralWidget_);
+   sideBar_ = new SideBar(centralWidget_);
    
-   ui_.setupUi(this);
-
-   glWidget_ = new GLWidget(ui_.widget);
-   //setCentralWidget(glWidget_);
-   glWidget_->setFocus();
+   horizontalLayout_->addWidget(sideBar_);
+   horizontalLayout_->addWidget(glWidget_);
+   setCentralWidget(centralWidget_);
 
 
-
-
-   // toolBar_ = new QToolBar(this);
-   // sideBar_ = new SideBar();
-   // sideBar_->setVisible(true);
-   // toolBar_->addWidget(sideBar_);
-   // addToolBar(Qt::LeftToolBarArea, toolBar_);
+//temporary todo
+   QString fileName("/work/assignment2/models-5/stormtrooper/stormtrooper.md2");
+   glWidget_->openMd2File(fileName);
 }
 
 /*
@@ -50,25 +65,31 @@ void Window::interfaceSetup()
 */
 void Window::setupSignalsAndSlots()
 {
-   connect(glWidget_, SIGNAL(fileLoadSuccess(bool)), this, SLOT(postSuccessMessageToScreen(bool)));
-   connect(ui_.actionQuit, SIGNAL(triggered(bool)), this, SLOT(exitApplication(bool)));
+   connect(sideBar_->md2LoadButton(), SIGNAL(released()), this, SLOT(openBrowseMd2FileBrowser()));
+   connect(quitAction_, SIGNAL(triggered(bool)), this, SLOT(exitApplication(bool)));
 }
 
 void Window::postSuccessMessageToScreen(bool success)
 {
-   if(success)
-   {
-      sideBar_->setLoadLabelText(QString("File Loaded Successfully"));
-   }
-   else
+   // if(success)
+   // {
+   //    sideBar_->setLoadLabelText(QString("File Loaded Successfully"));
+   // }
+   // else
 
 
-   {
-      sideBar_->setLoadLabelText(QString("File Load Error"));  
-   }
+   // {
+   //    sideBar_->setLoadLabelText(QString("File Load Error"));  
+   // }
+}
+
+void Window::openBrowseMd2FileBrowser()
+{
+   QString fileName = QFileDialog::getOpenFileName(this, QString("selectMd2File"), QString("./"), QString("Images (*.md2 *.MD2"));
+   glWidget_->openMd2File(fileName);
 }
 
 void Window::exitApplication(bool exit)
 {
-   QApplication::exit(0);
+   QApplication::exit(exit);
 }

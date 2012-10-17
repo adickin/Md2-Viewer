@@ -14,7 +14,8 @@ public:
    SideBar( QWidget* parent = NULL);
    ~SideBar();
 
-   void setLoadLabelText(const QString& newText);
+   void setCurrentMd2FileLabel(const QString& newText);
+   QPushButton* md2LoadButton() const;
 
 private:
    Ui::SideBar ui_;

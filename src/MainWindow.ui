@@ -36,6 +36,7 @@
        <attribute name="title">
         <string>Tab 1</string>
        </attribute>
+       <zorder>widget</zorder>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
