@@ -14,54 +14,48 @@ GLWidget::~GLWidget() { }
 
 void GLWidget::initializeGL() 
 {
-   glClearColor(1.0,1.0,1.0,1.0);
-
    glEnable(GL_DEPTH_TEST);
    glEnable(GL_LIGHT0);
+
+   glClearColor(0.0,0.0,0.0,0.0);
 }
 
 void GLWidget::resizeGL(int width, int height) 
 {
-   glMatrixMode(GL_PROJECTION);
-   glLoadIdentity();
-
+   //glEnable(GL_DEPTH_TEST);
    windowWidth_ = width;
    windowHeight_ = height;
-
    glViewport(0,0,width, height);
 
-   //Dimensions dimensions = md2Reader_.dimensions();
-   // glOrtho(dimensions.minX, dimensions.maxX,
-   //          dimensions.minY, dimensions.maxY,
-   //          dimensions.minZ, dimensions.maxZ);
-
-
-    //float ratio;
-    // if (width > height) {
-    //     ratio = (float)width/(float)height;
-    //     glOrtho(-ratio, ratio, -1, 1, -1, 1);
-    // } else {
-    //     ratio = (float)height/(float)width;
-    //     glOrtho(-1, 1, -ratio, ratio, -1, 1);
-    // }
-
+   // glMatrixMode(GL_PROJECTION);
    // glLoadIdentity();
-   gluPerspective(45, 1.0, 0.1, 100);
+   // gluPerspective(60, (GLfloat)windowWidth_/windowHeight_, 0.1, 10000.0);
 
-   glMatrixMode(GL_MODELVIEW);
-   glLoadIdentity();
-   gluLookAt(0, 0, md2Reader_.dimensions().maxZ*2,
-            0, 0, 0,
-            0, 1, 0);
+   // glMatrixMode(GL_MODELVIEW);
+   // glLoadIdentity();
+   // gluLookAt(0, 0, -50,
+   //             0, 0, 0,
+   //             0, 0, 1);
+   
+   
 }
 
 void GLWidget::paintGL() 
 {
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);   
-   glLoadIdentity();
 
-   drawWireFrame();
+   glMatrixMode(GL_PROJECTION);
+   glLoadIdentity();
+   gluPerspective(60, (GLfloat)windowWidth_/windowHeight_, 1.0, 100.0);
+
+   glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
+   gluLookAt(md2Reader_.dimensions().maxZ * 3, 0, 0,
+            0, 0, 0,
+            0, 0, 1);
     
+   drawWireFrame();
+
    glFlush();
 }
 
@@ -112,7 +106,7 @@ void GLWidget::openMd2File(QString& filePath)
 
 void GLWidget::drawWireFrame()
 {
-   glColor3f(0.0, 0.0, 1.0);
+   glColor3f(0.0, 1.0, 0.0);
 
    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
    glBegin(GL_TRIANGLES);
