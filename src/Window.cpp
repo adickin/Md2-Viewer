@@ -52,7 +52,7 @@ void Window::interfaceSetup()
 
 
 //temporary todo
-   QString fileName("/work/assignment2/models-5/stormtrooper/stormtrooper.md2");
+   QString fileName("/work/assignment2/models-5/sephiroth/sephiroth.md2");
    glWidget_->openMd2File(fileName);
 }
 

@@ -47,7 +47,7 @@ class BMPImg
 
 
    int Load(char* szFilename);
-   int GetBPP();
+   int GetBPP();//bits per pixel
    int GetWidth();
    int GetHeight();
    unsigned char* GetImg();       // Return a pointer to image data, BGR format
@@ -138,7 +138,7 @@ inline int BMPImg::Load(char* szFilename)
   // Free the file data
   delete [] pData;
   pData=NULL;
-
+  FlipImg();
   return IMG_OK;
  }
 

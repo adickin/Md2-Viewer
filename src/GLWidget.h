@@ -33,7 +33,8 @@ protected:
 
 private:
    void drawWireFrame();
-   void updateOrthoMatrix();
+   void drawModel();
+
 private:
    MD2Wrapper md2Reader_;
 

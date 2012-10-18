@@ -25,8 +25,8 @@ struct VertexCoordinate
 
 struct TextureCoordinate
 {
-   float u;
-   float v;
+   short u;
+   short v;
 };
 
 struct Dimensions
