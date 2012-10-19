@@ -24,12 +24,17 @@ public:
 public slots:
    void postSuccessMessageToScreen(bool success);
 
+signals:
+   void md2FileOpened(const QString&);
+   void textureFileOpened(const QString&);
+
 private://methods
    void interfaceSetup();
    void setupSignalsAndSlots();
 
 private slots://members
    void openBrowseMd2FileBrowser();
+   void openTextureFileBrowser();
    void exitApplication(bool exit);
 
 private:

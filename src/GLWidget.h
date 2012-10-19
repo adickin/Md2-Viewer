@@ -4,6 +4,8 @@
 
 #include <QGLWidget>
 #include "MD2Wrapper.h"
+#include "BMP.h"
+#include "DrawingDefs.h"
 
 
 class GLWidget : public QGLWidget 
@@ -16,6 +18,8 @@ public:
 
 public slots:
    void openMd2File(QString& filePath);
+   void openTextureFileBMP(QString& filePath);
+   void changeDisplayMode(const QString& newMode);
 
 signals:
    void fileLoadSuccess(bool sucess);
@@ -37,9 +41,13 @@ private:
 
 private:
    MD2Wrapper md2Reader_;
+   BMPImg bmpImageReader_;
 
    int windowWidth_;
    int windowHeight_;
+
+   GLuint texture_;
+   DrawingDefines::Mode displayMode_;
 
 };
 

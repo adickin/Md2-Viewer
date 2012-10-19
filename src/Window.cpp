@@ -1,5 +1,5 @@
 
-#include <QString>
+#include <QStringList>
 
 #include "Window.h"
 
@@ -49,11 +49,6 @@ void Window::interfaceSetup()
    horizontalLayout_->addWidget(sideBar_);
    horizontalLayout_->addWidget(glWidget_);
    setCentralWidget(centralWidget_);
-
-
-//temporary todo
-   QString fileName("/work/assignment2/models-5/sephiroth/sephiroth.md2");
-   glWidget_->openMd2File(fileName);
 }
 
 /*
@@ -65,8 +60,23 @@ void Window::interfaceSetup()
 */
 void Window::setupSignalsAndSlots()
 {
-   connect(sideBar_->md2LoadButton(), SIGNAL(released()), this, SLOT(openBrowseMd2FileBrowser()));
-   connect(quitAction_, SIGNAL(triggered(bool)), this, SLOT(exitApplication(bool)));
+   //Opening Tab
+   connect(sideBar_->ui_.md2OpenButton, SIGNAL(released())
+         , this, SLOT(openBrowseMd2FileBrowser()));
+   connect(this, SIGNAL(md2FileOpened(const QString&))
+         , sideBar_->ui_.currentMd2File, SLOT(setText(const QString&)));
+
+   connect(sideBar_->ui_.selectTextureButton, SIGNAL(released())
+         , this, SLOT(openTextureFileBrowser()));
+   connect(this, SIGNAL(textureFileOpened(const QString&))
+         , sideBar_->ui_.currentTextureLabel, SLOT(setText(const QString&)));
+
+   //Rendering Tab
+   connect(sideBar_->ui_.displayModeComboBox, SIGNAL(currentIndexChanged(const QString&)),
+            glWidget_, SLOT(changeDisplayMode(const QString&)));
+
+   connect(quitAction_, SIGNAL(triggered(bool))
+         , this, SLOT(exitApplication(bool)));
 }
 
 void Window::postSuccessMessageToScreen(bool success)
@@ -76,8 +86,18 @@ void Window::postSuccessMessageToScreen(bool success)
 
 void Window::openBrowseMd2FileBrowser()
 {
-   QString fileName = QFileDialog::getOpenFileName(this, QString("selectMd2File"), QString("./"), QString("Images (*.md2 *.MD2"));
+   QString fileName = QFileDialog::getOpenFileName(this, QString("selectMd2File"), QString("./"), QString("Models (*.md2 *.MD2"));
    glWidget_->openMd2File(fileName);
+   QStringList list = fileName.split(QString("/"));
+   emit md2FileOpened(list.at(list.size()-1));
+}
+
+void Window::openTextureFileBrowser()
+{
+   QString fileName = QFileDialog::getOpenFileName(this, QString("selectTextureFile"), QString("./"), QString("Textures (*.BMP *.bmp"));
+   glWidget_->openTextureFileBMP(fileName);
+   QStringList list = fileName.split(QString("/"));
+   emit textureFileOpened(list.at(list.size()-1));
 }
 
 void Window::exitApplication(bool exit)

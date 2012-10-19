@@ -10,13 +10,3 @@ SideBar::~SideBar()
 {
 
 }
-
-void SideBar::setCurrentMd2FileLabel(const QString& newText)
-{
-   ui_.currentMd2File->setText(newText);
-}
-
-QPushButton* SideBar::md2LoadButton() const
-{
-   return ui_.md2OpenButton;
-}
