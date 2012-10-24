@@ -25,6 +25,28 @@ namespace DrawingDefines
    static const QString FLAT_SHADING_STRING("Flat Shading");
    static const QString SMOOTH_SHADING_STRING("Smooth Shading with Lighting");
    static const QString TEXTURE_STRING("Textured");
+
+   struct VertexCoordinate
+   {
+      float x;
+      float y;
+      float z;
+
+      bool areVertexsEqual(VertexCoordinate vertexTwo)
+      {
+         bool equal = true;
+         equal &= (x == vertexTwo.x);
+         equal &= (y == vertexTwo.y);
+         equal &= (z == vertexTwo.z);
+         return equal;
+      }
+   };
+
+   struct TextureCoordinate
+   {
+      short u;
+      short v;
+   };
 }
 
 #endif

@@ -139,14 +139,14 @@ void GLWidget::openMd2File(QString& filePath)
 
 void GLWidget::openTextureFileBMP(QString& filePath)
 {
-   fprintf(stderr, "getting here\n");
+
    int loadSuccessful = bmpImageReader_.Load(filePath.toAscii().data());
-   fprintf(stderr, "getting here\n");
+
    if(IMG_OK == loadSuccessful)
    {
-      fprintf(stderr, "getting here\n");
+
       glGenTextures(1, &texture_);
-      fprintf(stderr, "getting here\n");
+
       glBindTexture(GL_TEXTURE_2D, texture_);
 
       glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR); // Linear Filtering
@@ -154,12 +154,10 @@ void GLWidget::openTextureFileBMP(QString& filePath)
       glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
       glHint (GL_GENERATE_MIPMAP_HINT_SGIS, GL_NICEST);
 
-fprintf(stderr, "getting here\n");
+
       gluBuild2DMipmaps(GL_TEXTURE_2D, 3, bmpImageReader_.GetWidth(), bmpImageReader_.GetHeight()
          , GL_BGR, GL_UNSIGNED_BYTE, bmpImageReader_.GetImg() );
-      fprintf(stderr, "getting here\n");
    }
-   fprintf(stderr, "getting here\n");
 }
 
 void GLWidget::changeDisplayMode(const QString& newMode)

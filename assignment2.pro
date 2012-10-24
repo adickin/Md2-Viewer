@@ -21,7 +21,8 @@ HEADERS +=  src/GLWidget.h \
             src/Pcx.h \
             src/BMP.h \
             src/md2.h \
-            src/MD2Wrapper.h
+            src/MD2Wrapper.h \
+            src/MathVector.h
             
 SOURCES +=  src/GLWidget.cpp \
             src/main.cpp \
@@ -29,7 +30,8 @@ SOURCES +=  src/GLWidget.cpp \
             src/SideBar.cpp \
             src/md2.cpp \
             src/pcx.cpp \
-            src/MD2Wrapper.cpp
+            src/MD2Wrapper.cpp \
+            src/MathVector.cpp
 
 FORMS +=    src/SideBar.ui \
             src/MainWindow.ui

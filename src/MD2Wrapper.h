@@ -12,22 +12,15 @@
 
 //QT
 #include <QString>
+#include <QList>
 
 //assignment
 #include "md2.h"
+#include "DrawingDefs.h"
+#include "MathVector.h"
 
-struct VertexCoordinate
-{
-   float x;
-   float y;
-   float z;
-};
-
-struct TextureCoordinate
-{
-   short u;
-   short v;
-};
+class MathVector;
+using namespace DrawingDefines;
 
 struct Dimensions
 {
@@ -52,6 +45,7 @@ public:
    int skinWidth() const;
    int skinHeight() const;
    Dimensions dimensions();
+   QList<MathVector*>* faceNormals();
 
    VertexCoordinate retrieveVertexCoordinatesAt(const int index);
    TextureCoordinate retrieveTextureCoordinateAt(const int index);
@@ -61,7 +55,11 @@ public:
 
 private:
    void determineDimensions();
+   void determineFaceNormals();
+   void determineVertexNormals();
    Dimensions md2ImageDimensions_;
+   QList<MathVector*> faceNormals_;
+   QList<MathVector*> vertexNormals_;
    MD2* md2Reader_; 
 };
 
