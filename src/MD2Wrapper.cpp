@@ -62,6 +62,12 @@ QList<MathVector*>* MD2Wrapper::faceNormals()
 {
    return &faceNormals_;
 }
+
+QList<MathVector*>* MD2Wrapper::vertexNormals()
+{
+   return &vertexNormals_;
+}
+
 VertexCoordinate MD2Wrapper::retrieveVertexCoordinatesAt(const int index)
 {
    VertexCoordinate coordinate;
@@ -136,9 +142,6 @@ void MD2Wrapper::determineDimensions()
          md2ImageDimensions_.maxZ = vertex.z;
       }
    }
-   fprintf(stderr, "%d, %d, %d, %d, %d, %d\n",md2ImageDimensions_.minX, md2ImageDimensions_.maxX
-                                             ,md2ImageDimensions_.minY, md2ImageDimensions_.maxY
-                                             ,md2ImageDimensions_.minZ, md2ImageDimensions_.maxZ);
 }
 
 void MD2Wrapper::determineFaceNormals()

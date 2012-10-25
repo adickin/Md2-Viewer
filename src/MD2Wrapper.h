@@ -46,6 +46,7 @@ public:
    int skinHeight() const;
    Dimensions dimensions();
    QList<MathVector*>* faceNormals();
+   QList<MathVector*>* vertexNormals();
 
    VertexCoordinate retrieveVertexCoordinatesAt(const int index);
    TextureCoordinate retrieveTextureCoordinateAt(const int index);

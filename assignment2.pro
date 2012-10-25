@@ -15,14 +15,15 @@ UI_DIR = ./.ui
 
 
 # Input
-HEADERS +=  src/GLWidget.h \
+HEADERS +=  src/TextureManager.h \
+            src/GLWidget.h \
             src/Window.h \
             src/SideBar.h \
             src/Pcx.h \
             src/BMP.h \
             src/md2.h \
             src/MD2Wrapper.h \
-            src/MathVector.h
+            src/MathVector.h 
             
 SOURCES +=  src/GLWidget.cpp \
             src/main.cpp \
@@ -31,7 +32,8 @@ SOURCES +=  src/GLWidget.cpp \
             src/md2.cpp \
             src/pcx.cpp \
             src/MD2Wrapper.cpp \
-            src/MathVector.cpp
+            src/MathVector.cpp \
+            src/TextureManager.cpp
 
 FORMS +=    src/SideBar.ui \
             src/MainWindow.ui

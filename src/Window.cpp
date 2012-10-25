@@ -94,7 +94,8 @@ void Window::openBrowseMd2FileBrowser()
 
 void Window::openTextureFileBrowser()
 {
-   QString fileName = QFileDialog::getOpenFileName(this, QString("selectTextureFile"), QString("./"), QString("Textures (*.BMP *.bmp"));
+   QString fileName = QFileDialog::getOpenFileName(this, QString("selectTextureFile"), QString("./")
+                              , QString("Textures (*.BMP *.bmp *.pcx *.PCX"));
    glWidget_->openTextureFileBMP(fileName);
    QStringList list = fileName.split(QString("/"));
    emit textureFileOpened(list.at(list.size()-1));

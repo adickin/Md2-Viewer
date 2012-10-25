@@ -6,6 +6,7 @@
 #include "MD2Wrapper.h"
 #include "BMP.h"
 #include "DrawingDefs.h"
+#include "TextureManager.h"
 
 
 class GLWidget : public QGLWidget 
@@ -42,12 +43,14 @@ private:
 private:
    MD2Wrapper md2Reader_;
    BMPImg bmpImageReader_;
+   TextureManager* texManager_;
 
    int windowWidth_;
    int windowHeight_;
 
    GLuint texture_;
    DrawingDefines::Mode displayMode_;
+   bool textureLoadedForMd2Model_;
 
 };
 
