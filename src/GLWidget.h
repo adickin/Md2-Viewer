@@ -19,7 +19,7 @@ public:
 
 public slots:
    void openMd2File(QString& filePath);
-   void openTextureFileBMP(QString& filePath);
+   void openTextureFile(QString& filePath);
    void changeDisplayMode(const QString& newMode);
 
 signals:
@@ -37,7 +37,7 @@ protected:
    void wheelEvent(QWheelEvent *event);
 
 private:
-   void drawWireFrame();
+   void drawVertexNormals();
    void drawModel();
 
 private:

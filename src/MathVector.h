@@ -11,13 +11,14 @@
 #define MATHVECTOR_H
 
 #include "DrawingDefs.h"
+#include "stdio.h"
 
 using namespace DrawingDefines;
 
 /*
 ***************************************************************
 *
-*    
+*  
 *
 ***************************************************************
 */
@@ -28,7 +29,7 @@ public:
    MathVector(VertexCoordinate one, VertexCoordinate two);
    ~MathVector();
 
-   void crossProduct(const MathVector& vector);
+   void crossProduct(const MathVector* vector);
    void normalizeVector();
 
    float x() const;

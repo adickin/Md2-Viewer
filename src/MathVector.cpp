@@ -28,9 +28,6 @@ MathVector::MathVector(float x, float y, float z)
 */
 MathVector::MathVector(VertexCoordinate one, VertexCoordinate two)
 :isUnitVector_(false)
-,x_(0)
-,y_(0)
-,z_(0)
 {
    x_ = two.x - one.x;
    y_ = two.y - one.y;
@@ -42,16 +39,21 @@ MathVector::~MathVector()
    //does nothing
 }
 
-void MathVector::crossProduct(const MathVector& vector)
+void MathVector::crossProduct(const MathVector* vector)
 {
-   x_ = ((y_ * vector.z_) - (z_ * vector.y_));
-   y_ = ((z_ * vector.x_) - (x_ * vector.z_));
-   z_ = ((x_ * vector.y_) - (y_ * vector.x_));
+   float tempX = ((y_ * vector->z_) - (z_ * vector->y_));
+   float tempY = ((z_ * vector->x_) - (x_ * vector->z_));
+   float tempZ = ((x_ * vector->y_) - (y_ * vector->x_));
+
+   x_ = tempX;
+   y_ = tempY;
+   z_ = tempZ;
 }
 
 void MathVector::normalizeVector()
 {
-   float magnitude = abs(sqrt((x_ * x_) + (y_ * y_) + (z_ * z_)));
+   float magnitude = sqrt((x_ * x_) + (y_ * y_) + (z_ * z_));
+
    x_ = x_/magnitude;
    y_ = y_/magnitude;
    z_ = z_/magnitude;

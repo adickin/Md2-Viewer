@@ -161,8 +161,10 @@ void MD2Wrapper::determineFaceNormals()
       MathVector* vectorOne = new MathVector(vertexTwo, vertexOne);
       MathVector* vectorTwo = new MathVector(vertexThree, vertexOne);
 
-      vectorOne->crossProduct(*vectorTwo);
+      vectorOne->crossProduct(vectorTwo);
       vectorOne->normalizeVector();
+
+      //fprintf(stderr, "%f, %f, %f\n", vectorOne->x(), vectorOne->y(), vectorOne->z());
 
       faceNormals_.append(vectorOne);
       delete vectorTwo;
@@ -172,37 +174,46 @@ void MD2Wrapper::determineFaceNormals()
 void MD2Wrapper::determineVertexNormals()
 {
    QList<MathVector*> faceNormalForVertexNormalCalculation;
-   for(int i = 0; i < numberOfVertices(); ++i)
+   for(int i = 0; i < numberOfVertices(); i++)
    {
       VertexCoordinate vertex = retrieveVertexCoordinatesAt(i);
 
-      for(int currentTriangle = 0; currentTriangle < numberOfTriangles(); ++currentTriangle)
+      for(int currentTriangle = 0; currentTriangle < numberOfTriangles(); currentTriangle++)
       {
          int indexOne = 0;
          int indexTwo = 0;
          int indexThree = 0;
-         retrieveTriangleVertexIndicies(i, &indexOne,
+         retrieveTriangleVertexIndicies(currentTriangle, &indexOne,
                                               &indexTwo, &indexThree);
          
          VertexCoordinate vertexOne = retrieveVertexCoordinatesAt(indexOne);
          VertexCoordinate vertexTwo = retrieveVertexCoordinatesAt(indexTwo);
          VertexCoordinate vertexThree = retrieveVertexCoordinatesAt(indexThree);
 
-         if(vertex.areVertexsEqual(vertexOne) ||
-            vertex.areVertexsEqual(vertexTwo) ||
-            vertex.areVertexsEqual(vertexThree))
+         // if(vertex.areVertexsEqual(vertexOne) ||
+         //    vertex.areVertexsEqual(vertexTwo) ||
+         //    vertex.areVertexsEqual(vertexThree))
+         if(i == indexOne || i == indexTwo || i == indexThree)
          {
+            //fprintf(stderr, "added to calculation\n");
             faceNormalForVertexNormalCalculation.append(faceNormals_.at(currentTriangle));
          }
+
       }
+      //fprintf(stderr, "DONE\n");
 
       MathVector* vertexNormal = new MathVector(0, 0, 0); 
+      int number = 0;
       foreach(MathVector* currentVector, faceNormalForVertexNormalCalculation)
       {
          vertexNormal->setX(vertexNormal->x() + currentVector->x());
          vertexNormal->setY(vertexNormal->y() + currentVector->y());
          vertexNormal->setZ(vertexNormal->z() + currentVector->z());
+         number++;
       }
+       vertexNormal->setX(vertexNormal->x()/number);
+       vertexNormal->setY(vertexNormal->y()/number);
+       vertexNormal->setZ(vertexNormal->z()/number);
 
       vertexNormal->normalizeVector();
       vertexNormals_.append(vertexNormal);

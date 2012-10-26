@@ -31,7 +31,6 @@ GLuint TextureManager::loadTextureFromFile(const QString& fileName)
 
       if(loadSuccessful == IMG_OK)
       {
-         fprintf(stderr, "getting here\n");
          gluBuild2DMipmaps(GL_TEXTURE_2D, 3, bmpImageReader_.GetWidth(), bmpImageReader_.GetHeight()
             , GL_BGR, GL_UNSIGNED_BYTE, bmpImageReader_.GetImg() );
       }
@@ -49,7 +48,6 @@ GLuint TextureManager::loadTextureFromFile(const QString& fileName)
 
       if(1 == loadSuccessful)
       {
-         fprintf(stderr, "getting here\n");
          gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
       }
    }

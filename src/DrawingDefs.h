@@ -18,8 +18,7 @@ namespace DrawingDefines
    {
       WIREFRAME,
       FLAT_SHADING,
-      SMOOTH_SHADING,
-      TEXTURE
+      SMOOTH_SHADING
    };
    static const QString WIREFRAME_STRING("Wire Frame");
    static const QString FLAT_SHADING_STRING("Flat Shading");
@@ -34,11 +33,9 @@ namespace DrawingDefines
 
       bool areVertexsEqual(VertexCoordinate vertexTwo)
       {
-         bool equal = true;
-         equal &= (x == vertexTwo.x);
-         equal &= (y == vertexTwo.y);
-         equal &= (z == vertexTwo.z);
-         return equal;
+         return ((x == vertexTwo.x) &&
+                (y == vertexTwo.y) &&
+                (z == vertexTwo.z));
       }
    };
 

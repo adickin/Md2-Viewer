@@ -8,7 +8,7 @@
 
 GLWidget::GLWidget(QWidget *parent) 
    :QGLWidget (parent) 
-   ,displayMode_(DrawingDefines::TEXTURE)
+   ,displayMode_(DrawingDefines::WIREFRAME)
    ,textureLoadedForMd2Model_(false)
 {
    texManager_ = new TextureManager();
@@ -21,6 +21,7 @@ GLWidget::~GLWidget() { }
 void GLWidget::initializeGL() 
 {
    glEnable(GL_DEPTH_TEST);
+   glEnable(GL_RESCALE_NORMAL);
    //glEnable(GL_LIGHT0);
    glClearColor(0.0,0.0,0.0,0.5);
 
@@ -41,7 +42,7 @@ void GLWidget::initializeGL()
 
    
    QString fileName2("/work/assignment2/models-5/sephiroth/sephiroth.bmp");
-   openTextureFileBMP(fileName2);
+   openTextureFile(fileName2);
 }
 
 void GLWidget::resizeGL(int width, int height) 
@@ -74,13 +75,13 @@ void GLWidget::paintGL()
    glScaled(scale,scale,scale);
     
    glPushMatrix();
-
    //Rotate the model to be upright.
    glRotatef(-90.0, 0.0, 0.0, 1.0);
    glRotatef(-90.0, 0.0, 1.0, 0.0);
 
    //glPushMatrix();
    drawModel();
+   drawVertexNormals();
    glPopMatrix();
    glFlush();
 }
@@ -132,29 +133,11 @@ void GLWidget::openMd2File(QString& filePath)
    emit fileLoadSuccess(loadSuccessful);
 }
 
-void GLWidget::openTextureFileBMP(QString& filePath)
-{
-   // int loadSuccessful = bmpImageReader_.Load(filePath.toAscii().data());
-
-   // if(IMG_OK == loadSuccessful)
-   // {
-       //glGenTextures(1, &texture_);
-
-   //    glBindTexture(GL_TEXTURE_2D, texture_);
-
-   //    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR); // Linear Filtering
-   //    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); // Linear Filtering
-   //    glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
-   //    glHint (GL_GENERATE_MIPMAP_HINT_SGIS, GL_NICEST);
-
-
-   //    gluBuild2DMipmaps(GL_TEXTURE_2D, 3, bmpImageReader_.GetWidth(), bmpImageReader_.GetHeight()
-   //       , GL_BGR, GL_UNSIGNED_BYTE, bmpImageReader_.GetImg() );
-      
+void GLWidget::openTextureFile(QString& filePath)
+{     
       texture_ = texManager_->loadTextureFromFile(filePath);
       textureLoadedForMd2Model_ = true;
       makeCurrent();
-   //}
 }
 
 void GLWidget::changeDisplayMode(const QString& newMode)
@@ -170,10 +153,6 @@ void GLWidget::changeDisplayMode(const QString& newMode)
    else if(DrawingDefines::SMOOTH_SHADING_STRING == newMode)
    {
       displayMode_ = DrawingDefines::SMOOTH_SHADING;
-   }
-   else if(DrawingDefines::TEXTURE_STRING == newMode)
-   {
-      displayMode_ = DrawingDefines::TEXTURE;
    }
 
    updateGL();
@@ -256,6 +235,34 @@ void GLWidget::drawModel()
       glVertex3f(vertexThree.x, vertexThree.y, vertexThree.z);
    }
    glEnd();
+
+   glDisable(GL_TEXTURE_2D);
+}
+
+void GLWidget::drawVertexNormals()
+{
+   //glEnable(GL_TEXTURE_2D);
+   glColor3f(1.0, 0.0, 0.0);
+   for(int i = 0; i < md2Reader_.numberOfVertices(); i++)
+   {
+      MathVector* vertexNormal = md2Reader_.vertexNormals()->at(i);
+      VertexCoordinate vertexCoordinate = md2Reader_.retrieveVertexCoordinatesAt(i);
+
+      glBegin(GL_LINE);
+
+      //fprintf(stderr, "normal %f, vertexcoord %f\n", vertexNormal->x(), vertexCoordinate.x);
+      //fprintf(stderr, "%f, %f, %f,\n", vertexNormal->x()*vertexCoordinate.x,
+      //   vertexNormal->y()*vertexCoordinate.y,vertexNormal->z()*vertexCoordinate.z);
+      glVertex3f(vertexCoordinate.x, vertexCoordinate.y,
+         vertexNormal->z());
+      glVertex3f((vertexNormal->x())+vertexCoordinate.x, (vertexNormal->y())+vertexCoordinate.y,
+         (vertexNormal->z())+vertexCoordinate.z);
+
+      glEnd();
+
+   }
+
+   //
 
    glDisable(GL_TEXTURE_2D);
 }

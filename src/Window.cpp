@@ -96,7 +96,7 @@ void Window::openTextureFileBrowser()
 {
    QString fileName = QFileDialog::getOpenFileName(this, QString("selectTextureFile"), QString("./")
                               , QString("Textures (*.BMP *.bmp *.pcx *.PCX"));
-   glWidget_->openTextureFileBMP(fileName);
+   glWidget_->openTextureFile(fileName);
    QStringList list = fileName.split(QString("/"));
    emit textureFileOpened(list.at(list.size()-1));
 }
