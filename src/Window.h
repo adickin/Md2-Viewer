@@ -21,20 +21,24 @@ public:
    Window(QWidget *parent = NULL);
    ~Window();
 
-public slots:
-   void postSuccessMessageToScreen(bool success);
+public:
 
 signals:
-   void md2FileOpened(const QString&);
-   void textureFileOpened(const QString&);
+   void modelFileOpened(const QString&);
+   void modelTextureFileOpened(const QString&);
+   void weaponFileLoaded(const QString&);
+   void weaponTextureLoaded(const QString&);
 
 private://methods
    void interfaceSetup();
    void setupSignalsAndSlots();
 
 private slots://members
-   void openBrowseMd2FileBrowser();
-   void openTextureFileBrowser();
+   void openMd2ModelFileBrowser();
+   void openModelTextureFileBrowser();
+   void openWeaponFileBrowser();
+   void openWeaponTextureFileBrowser();
+
    void exitApplication(bool exit);
 
 private:

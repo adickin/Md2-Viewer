@@ -4,7 +4,6 @@
 
 #include <QGLWidget>
 #include "MD2Wrapper.h"
-#include "BMP.h"
 #include "DrawingDefs.h"
 #include "TextureManager.h"
 
@@ -18,12 +17,15 @@ public:
    ~GLWidget();
 
 public slots:
-   void openMd2File(QString& filePath);
-   void openTextureFile(QString& filePath);
+   void openModelFile(QString& filePath);
+   void openModelTextureFile(QString& filePath);
+   void openWeaponFile(QString& filePath);
+   void openWeaponTextureFile(QString& filePath);
    void changeDisplayMode(const QString& newMode);
+   void showVertexNormals(int state);
 
 signals:
-   void fileLoadSuccess(bool sucess);
+   
 
 protected:
    float x, y, scale;
@@ -39,18 +41,25 @@ protected:
 private:
    void drawVertexNormals();
    void drawModel();
+   void drawWeapon();
 
 private:
-   MD2Wrapper md2Reader_;
-   BMPImg bmpImageReader_;
+   MD2Wrapper modelReader_;
+   MD2Wrapper weaponReader_;
    TextureManager* texManager_;
 
    int windowWidth_;
    int windowHeight_;
 
-   GLuint texture_;
+   GLuint modelTexture_;
+   GLuint weaponTexture_;
    DrawingDefines::Mode displayMode_;
+   bool weaponLoaded_;
    bool textureLoadedForMd2Model_;
+   bool textureLoadedForWeapon_;
+
+   bool drawVertexNormals_;
+   bool drawFaceNormals_;
 
 };
 

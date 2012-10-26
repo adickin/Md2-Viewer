@@ -9,7 +9,11 @@
 GLWidget::GLWidget(QWidget *parent) 
    :QGLWidget (parent) 
    ,displayMode_(DrawingDefines::WIREFRAME)
+   ,weaponLoaded_(false)
    ,textureLoadedForMd2Model_(false)
+   ,textureLoadedForWeapon_(false)
+   ,drawVertexNormals_(false)
+   ,drawFaceNormals_(false)
 {
    texManager_ = new TextureManager();
    setMinimumSize(500, 500);
@@ -22,7 +26,7 @@ void GLWidget::initializeGL()
 {
    glEnable(GL_DEPTH_TEST);
    glEnable(GL_RESCALE_NORMAL);
-   //glEnable(GL_LIGHT0);
+
    glClearColor(0.0,0.0,0.0,0.5);
 
    // glEnable(GL_LIGHTING);
@@ -34,20 +38,16 @@ void GLWidget::initializeGL()
    // GLfloat position[] = {100, 100, 100, 1};
    // glLightfv(GL_LIGHT0, GL_POSITION, position);
 
-
-
    //temporary todo
    QString fileName("/work/assignment2/models-5/sephiroth/sephiroth.md2");
-   openMd2File(fileName);
-
+   openModelFile(fileName);
    
    QString fileName2("/work/assignment2/models-5/sephiroth/sephiroth.bmp");
-   openTextureFile(fileName2);
+   openModelTextureFile(fileName2);
 }
 
 void GLWidget::resizeGL(int width, int height) 
 {
-   //glEnable(GL_DEPTH_TEST);
    windowWidth_ = width;
    windowHeight_ = height;
    glViewport(0,0,width, height);
@@ -66,10 +66,7 @@ void GLWidget::paintGL()
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
 
-
-   //glPopMatrix();
-
-   gluLookAt(0, 0, md2Reader_.dimensions().maxZ * 3,
+   gluLookAt(0, 0, modelReader_.dimensions().maxZ * 3,
             0, 0, 0,
             0, 1, 0);
    glScaled(scale,scale,scale);
@@ -79,9 +76,12 @@ void GLWidget::paintGL()
    glRotatef(-90.0, 0.0, 0.0, 1.0);
    glRotatef(-90.0, 0.0, 1.0, 0.0);
 
-   //glPushMatrix();
    drawModel();
-   drawVertexNormals();
+
+   if(drawVertexNormals_)
+   {
+      drawVertexNormals();
+   }
    glPopMatrix();
    glFlush();
 }
@@ -124,20 +124,32 @@ void GLWidget::wheelEvent(QWheelEvent *event)
    }
 }
 
-void GLWidget::openMd2File(QString& filePath)
+void GLWidget::openModelFile(QString& filePath)
 {
-   bool loadSuccessful = md2Reader_.loadModelFromFile(filePath);
-   resizeGL(windowWidth_, windowHeight_);
+   modelReader_.loadModelFromFile(filePath);
    textureLoadedForMd2Model_ = false;
-
-   emit fileLoadSuccess(loadSuccessful);
+   weaponLoaded_ = false;
 }
 
-void GLWidget::openTextureFile(QString& filePath)
+void GLWidget::openModelTextureFile(QString& filePath)
 {     
-      texture_ = texManager_->loadTextureFromFile(filePath);
-      textureLoadedForMd2Model_ = true;
-      makeCurrent();
+   glDeleteTextures(1, &modelTexture_);
+   modelTexture_ = texManager_->loadTextureFromFile(filePath);
+   textureLoadedForMd2Model_ = true;
+}
+
+void GLWidget::openWeaponFile(QString& filePath)
+{
+   weaponReader_.loadModelFromFile(filePath);
+   textureLoadedForWeapon_ = false;
+   weaponLoaded_ = true;
+}
+
+void GLWidget::openWeaponTextureFile(QString& filePath)
+{     
+   glDeleteTextures(1, &weaponTexture_);
+   weaponTexture_ = texManager_->loadTextureFromFile(filePath);
+   textureLoadedForWeapon_ = true;
 }
 
 void GLWidget::changeDisplayMode(const QString& newMode)
@@ -155,6 +167,12 @@ void GLWidget::changeDisplayMode(const QString& newMode)
       displayMode_ = DrawingDefines::SMOOTH_SHADING;
    }
 
+   updateGL();
+}
+
+void GLWidget::showVertexNormals(int state)
+{
+   drawVertexNormals_ = (state == (int)Qt::Checked);
    updateGL();
 }
 
@@ -184,7 +202,7 @@ void GLWidget::drawModel()
    if(textureLoadedForMd2Model_)
    {
       glEnable(GL_TEXTURE_2D);
-      glBindTexture(GL_TEXTURE_2D, texture_);
+      glBindTexture(GL_TEXTURE_2D, modelTexture_);
    }
    else
    {
@@ -194,44 +212,109 @@ void GLWidget::drawModel()
    glBegin(GL_TRIANGLES);
 
    for(int currentTriangle = 0; 
-      currentTriangle < md2Reader_.numberOfTriangles(); currentTriangle++)
+      currentTriangle < modelReader_.numberOfTriangles(); currentTriangle++)
    {
       int indexOne = 0;
       int indexTwo = 0;
       int indexThree = 0;
-      md2Reader_.retrieveTriangleVertexIndicies(currentTriangle, &indexOne,
+      modelReader_.retrieveTriangleVertexIndicies(currentTriangle, &indexOne,
                                               &indexTwo, &indexThree);
 
       int texOne = 0;
       int texTwo = 0;
       int texThree = 0;
-      md2Reader_.retrieveTriangleTextureIndicies(currentTriangle, &texOne,
+      modelReader_.retrieveTriangleTextureIndicies(currentTriangle, &texOne,
                                               &texTwo, &texThree);
 
-      VertexCoordinate vertexOne = md2Reader_.retrieveVertexCoordinatesAt(indexOne);
-      VertexCoordinate vertexTwo = md2Reader_.retrieveVertexCoordinatesAt(indexTwo);
-      VertexCoordinate vertexThree = md2Reader_.retrieveVertexCoordinatesAt(indexThree);
+      VertexCoordinate vertexOne = modelReader_.retrieveVertexCoordinatesAt(indexOne);
+      VertexCoordinate vertexTwo = modelReader_.retrieveVertexCoordinatesAt(indexTwo);
+      VertexCoordinate vertexThree = modelReader_.retrieveVertexCoordinatesAt(indexThree);
 
-      TextureCoordinate textureOne = md2Reader_.retrieveTextureCoordinateAt(texOne);
-      TextureCoordinate textureTwo = md2Reader_.retrieveTextureCoordinateAt(texTwo);
-      TextureCoordinate textureThree = md2Reader_.retrieveTextureCoordinateAt(texThree);
+      TextureCoordinate textureOne = modelReader_.retrieveTextureCoordinateAt(texOne);
+      TextureCoordinate textureTwo = modelReader_.retrieveTextureCoordinateAt(texTwo);
+      TextureCoordinate textureThree = modelReader_.retrieveTextureCoordinateAt(texThree);
 
-      MathVector* vector = md2Reader_.vertexNormals()->at(indexOne);
+      MathVector* vector = modelReader_.vertexNormals()->at(indexOne);
       glNormal3f(vector->x(), vector->y(), vector->z());
-      glTexCoord2f((float) textureOne.u/md2Reader_.skinWidth(),
-                  (float) textureOne.v/md2Reader_.skinHeight());
+      glTexCoord2f((float) textureOne.u/modelReader_.skinWidth(),
+                  (float) textureOne.v/modelReader_.skinHeight());
       glVertex3f(vertexOne.x, vertexOne.y, vertexOne.z);
 
-      vector = md2Reader_.vertexNormals()->at(indexTwo);
+      vector = modelReader_.vertexNormals()->at(indexTwo);
       glNormal3f(vector->x(), vector->y(), vector->z());
-      glTexCoord2f((float) textureTwo.u/md2Reader_.skinWidth(),
-               (float) textureTwo.v/md2Reader_.skinHeight());
+      glTexCoord2f((float) textureTwo.u/modelReader_.skinWidth(),
+               (float) textureTwo.v/modelReader_.skinHeight());
       glVertex3f(vertexTwo.x, vertexTwo.y, vertexTwo.z);
 
-      vector = md2Reader_.vertexNormals()->at(indexThree);
+      vector = modelReader_.vertexNormals()->at(indexThree);
       glNormal3f(vector->x(), vector->y(), vector->z());
-      glTexCoord2f((float) textureThree.u/md2Reader_.skinWidth(),
-               (float) textureThree.v/md2Reader_.skinHeight());
+      glTexCoord2f((float) textureThree.u/modelReader_.skinWidth(),
+               (float) textureThree.v/modelReader_.skinHeight());
+      glVertex3f(vertexThree.x, vertexThree.y, vertexThree.z);
+   }
+   glEnd();
+
+   glDisable(GL_TEXTURE_2D);
+
+   if(weaponLoaded_)
+   {
+      drawWeapon();
+   }
+}
+
+void GLWidget::drawWeapon()
+{
+   if(textureLoadedForWeapon_)
+   {
+      glEnable(GL_TEXTURE_2D);
+      glBindTexture(GL_TEXTURE_2D, weaponTexture_);
+   }
+   else
+   {
+      glColor3f(1.0, 0.0, 0.0);
+   }
+
+   glBegin(GL_TRIANGLES);
+
+   for(int currentTriangle = 0; 
+      currentTriangle < weaponReader_.numberOfTriangles(); currentTriangle++)
+   {
+      int indexOne = 0;
+      int indexTwo = 0;
+      int indexThree = 0;
+      weaponReader_.retrieveTriangleVertexIndicies(currentTriangle, &indexOne,
+                                              &indexTwo, &indexThree);
+
+      int texOne = 0;
+      int texTwo = 0;
+      int texThree = 0;
+      weaponReader_.retrieveTriangleTextureIndicies(currentTriangle, &texOne,
+                                              &texTwo, &texThree);
+
+      VertexCoordinate vertexOne = weaponReader_.retrieveVertexCoordinatesAt(indexOne);
+      VertexCoordinate vertexTwo = weaponReader_.retrieveVertexCoordinatesAt(indexTwo);
+      VertexCoordinate vertexThree = weaponReader_.retrieveVertexCoordinatesAt(indexThree);
+
+      TextureCoordinate textureOne = weaponReader_.retrieveTextureCoordinateAt(texOne);
+      TextureCoordinate textureTwo = weaponReader_.retrieveTextureCoordinateAt(texTwo);
+      TextureCoordinate textureThree = weaponReader_.retrieveTextureCoordinateAt(texThree);
+
+      MathVector* vector = weaponReader_.vertexNormals()->at(indexOne);
+      glNormal3f(vector->x(), vector->y(), vector->z());
+      glTexCoord2f((float) textureOne.u/weaponReader_.skinWidth(),
+                  (float) textureOne.v/weaponReader_.skinHeight());
+      glVertex3f(vertexOne.x, vertexOne.y, vertexOne.z);
+
+      vector = weaponReader_.vertexNormals()->at(indexTwo);
+      glNormal3f(vector->x(), vector->y(), vector->z());
+      glTexCoord2f((float) textureTwo.u/weaponReader_.skinWidth(),
+               (float) textureTwo.v/weaponReader_.skinHeight());
+      glVertex3f(vertexTwo.x, vertexTwo.y, vertexTwo.z);
+
+      vector = weaponReader_.vertexNormals()->at(indexThree);
+      glNormal3f(vector->x(), vector->y(), vector->z());
+      glTexCoord2f((float) textureThree.u/weaponReader_.skinWidth(),
+               (float) textureThree.v/weaponReader_.skinHeight());
       glVertex3f(vertexThree.x, vertexThree.y, vertexThree.z);
    }
    glEnd();
@@ -241,28 +324,17 @@ void GLWidget::drawModel()
 
 void GLWidget::drawVertexNormals()
 {
-   //glEnable(GL_TEXTURE_2D);
    glColor3f(1.0, 0.0, 0.0);
-   for(int i = 0; i < md2Reader_.numberOfVertices(); i++)
+   for(int i = 0; i < modelReader_.numberOfVertices(); i++)
    {
-      MathVector* vertexNormal = md2Reader_.vertexNormals()->at(i);
-      VertexCoordinate vertexCoordinate = md2Reader_.retrieveVertexCoordinatesAt(i);
+      MathVector* vertexNormal = modelReader_.vertexNormals()->at(i);
+      VertexCoordinate vertexCoordinate = modelReader_.retrieveVertexCoordinatesAt(i);
 
       glBegin(GL_LINE);
-
-      //fprintf(stderr, "normal %f, vertexcoord %f\n", vertexNormal->x(), vertexCoordinate.x);
-      //fprintf(stderr, "%f, %f, %f,\n", vertexNormal->x()*vertexCoordinate.x,
-      //   vertexNormal->y()*vertexCoordinate.y,vertexNormal->z()*vertexCoordinate.z);
       glVertex3f(vertexCoordinate.x, vertexCoordinate.y,
-         vertexNormal->z());
-      glVertex3f((vertexNormal->x())+vertexCoordinate.x, (vertexNormal->y())+vertexCoordinate.y,
-         (vertexNormal->z())+vertexCoordinate.z);
-
+         vertexCoordinate.z);
+      glVertex3f((vertexNormal->x()*2)+vertexCoordinate.x, (vertexNormal->y()*2)+vertexCoordinate.y,
+         (vertexNormal->z()*2)+vertexCoordinate.z);
       glEnd();
-
    }
-
-   //
-
-   glDisable(GL_TEXTURE_2D);
 }

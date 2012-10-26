@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>320</width>
-    <height>575</height>
+    <height>517</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
@@ -29,7 +35,7 @@
    <item>
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="pageOne">
       <property name="geometry">
@@ -37,7 +43,7 @@
         <x>0</x>
         <y>0</y>
         <width>302</width>
-        <height>493</height>
+        <height>435</height>
        </rect>
       </property>
       <attribute name="label">
@@ -45,28 +51,24 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
+        <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
+            <layout class="QVBoxLayout" name="verticalLayout_4">
              <item>
-              <layout class="QVBoxLayout" name="verticalLayout_5">
-               <item>
-                <widget class="QPushButton" name="md2OpenButton">
-                 <property name="text">
-                  <string>Select Model...</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="currentMd2File">
-                 <property name="text">
-                  <string>Current Model: somthing.md2</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
+              <widget class="QPushButton" name="md2OpenButton">
+               <property name="text">
+                <string>Select Model...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="currentMd2File">
+               <property name="text">
+                <string>Current Model: somthing.md2</string>
+               </property>
+              </widget>
              </item>
              <item>
               <widget class="Line" name="line_7">
@@ -76,22 +78,60 @@
               </widget>
              </item>
              <item>
-              <layout class="QVBoxLayout" name="verticalLayout_6">
-               <item>
-                <widget class="QPushButton" name="selectTextureButton">
-                 <property name="text">
-                  <string>Select Model Texture...</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="currentTextureLabel">
-                 <property name="text">
-                  <string>Current Texture: </string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
+              <widget class="QPushButton" name="selectTextureButton">
+               <property name="text">
+                <string>Select Model Texture...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="currentTextureLabel">
+               <property name="text">
+                <string>Current Texture: </string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Line" name="line_9">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="weaponOpenButton">
+               <property name="text">
+                <string>Select Weapon...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="currentWeapon">
+               <property name="text">
+                <string>Current Model: somthing.md2</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Line" name="line_8">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="selectWeaponTextureButton">
+               <property name="text">
+                <string>Select Weapon Texture...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="currentWeaponTextureLabel">
+               <property name="text">
+                <string>Current Texture: </string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -133,7 +173,7 @@
         <x>0</x>
         <y>0</y>
         <width>302</width>
-        <height>493</height>
+        <height>435</height>
        </rect>
       </property>
       <attribute name="label">
@@ -189,7 +229,7 @@
              <item>
               <widget class="QCheckBox" name="displayNormalsCheckBox">
                <property name="text">
-                <string>Display Vertex Normals</string>
+                <string>Display Face Normals</string>
                </property>
               </widget>
              </item>
