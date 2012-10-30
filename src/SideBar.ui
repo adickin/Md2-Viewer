@@ -35,7 +35,7 @@
    <item>
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="pageOne">
       <property name="geometry">
@@ -159,8 +159,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>272</width>
-        <height>202</height>
+        <width>302</width>
+        <height>547</height>
        </rect>
       </property>
       <attribute name="label">
@@ -476,10 +476,13 @@
                <item>
                 <widget class="QSlider" name="allScaleSlider">
                  <property name="minimum">
-                  <number>-180</number>
+                  <number>0</number>
                  </property>
                  <property name="maximum">
-                  <number>180</number>
+                  <number>100</number>
+                 </property>
+                 <property name="sliderPosition">
+                  <number>50</number>
                  </property>
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -488,17 +491,20 @@
                   <enum>QSlider::TicksBelow</enum>
                  </property>
                  <property name="tickInterval">
-                  <number>180</number>
+                  <number>50</number>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QSlider" name="xScaleSlider">
                  <property name="minimum">
-                  <number>-180</number>
+                  <number>0</number>
                  </property>
                  <property name="maximum">
-                  <number>180</number>
+                  <number>100</number>
+                 </property>
+                 <property name="sliderPosition">
+                  <number>50</number>
                  </property>
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -507,17 +513,20 @@
                   <enum>QSlider::TicksBelow</enum>
                  </property>
                  <property name="tickInterval">
-                  <number>180</number>
+                  <number>50</number>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QSlider" name="yScaleSlider">
                  <property name="minimum">
-                  <number>-180</number>
+                  <number>0</number>
                  </property>
                  <property name="maximum">
-                  <number>180</number>
+                  <number>100</number>
+                 </property>
+                 <property name="sliderPosition">
+                  <number>50</number>
                  </property>
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -526,17 +535,20 @@
                   <enum>QSlider::TicksBelow</enum>
                  </property>
                  <property name="tickInterval">
-                  <number>180</number>
+                  <number>50</number>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QSlider" name="zScaleSlider">
                  <property name="minimum">
-                  <number>-180</number>
+                  <number>0</number>
                  </property>
                  <property name="maximum">
-                  <number>180</number>
+                  <number>100</number>
+                 </property>
+                 <property name="sliderPosition">
+                  <number>50</number>
                  </property>
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -545,7 +557,7 @@
                   <enum>QSlider::TicksBelow</enum>
                  </property>
                  <property name="tickInterval">
-                  <number>180</number>
+                  <number>50</number>
                  </property>
                 </widget>
                </item>
@@ -737,8 +749,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>114</width>
-        <height>542</height>
+        <width>302</width>
+        <height>547</height>
        </rect>
       </property>
       <attribute name="label">

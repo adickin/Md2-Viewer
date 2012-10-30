@@ -5,8 +5,10 @@
 #include <GL/glut.h>
 #include "BMP.h"
 #include "MathVector.h"
+#include "math.h"
+#include "AffineTransformer.h"
 
-GLWidget::GLWidget(QWidget *parent) 
+GLWidget::GLWidget(AffineTransformer* transformer, QWidget *parent) 
    :QGLWidget (parent) 
    ,displayMode_(DrawingDefines::WIREFRAME)
    ,weaponLoaded_(false)
@@ -14,11 +16,10 @@ GLWidget::GLWidget(QWidget *parent)
    ,textureLoadedForWeapon_(false)
    ,drawVertexNormals_(false)
    ,drawFaceNormals_(false)
+   ,transformer_(transformer)
 {
    texManager_ = new TextureManager();
    setMinimumSize(500, 500);
-   scale = 1;
-
 }
 
 GLWidget::~GLWidget() { }
@@ -29,26 +30,37 @@ void GLWidget::initializeGL()
    glEnable(GL_RESCALE_NORMAL);
 
    glClearColor(0.3,0.6,0.5,0.5);
+   enableLighting();
    
    //load the ground texture only once.
    QString groundTexturePath("/work/assignment2/src/ground.bmp");
    groundTexture_ = texManager_->loadTextureFromFile(groundTexturePath);
-
-   glEnable(GL_LIGHTING);
-   glEnable(GL_LIGHT0);
-
-   glEnable(GL_COLOR_MATERIAL);
-   glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-
-   GLfloat position[] = {0, 0, 20, 1};
-   glLightfv(GL_LIGHT0, GL_POSITION, position);
-
+   
    //temporary todo
    QString fileName("/work/assignment2/models-5/sephiroth/sephiroth.md2");
    openModelFile(fileName);
    
    QString fileName2("/work/assignment2/models-5/sephiroth/sephiroth.bmp");
    openModelTextureFile(fileName2);
+}
+
+void GLWidget::enableLighting()
+{
+   glEnable(GL_LIGHTING);
+   glEnable(GL_LIGHT0);
+
+   glEnable(GL_COLOR_MATERIAL);
+   glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+
+   GLfloat position[] = {0, 20, 0, 1};
+   glLightfv(GL_LIGHT0, GL_POSITION, position);
+}
+
+void GLWidget::disableLighting()
+{
+   glDisable(GL_LIGHTING);
+   glDisable(GL_LIGHT0);
+   glDisable(GL_COLOR_MATERIAL);
 }
 
 void GLWidget::resizeGL(int width, int height) 
@@ -62,7 +74,7 @@ void GLWidget::paintGL()
 {
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
    glColor3f(1.0, 1.0, 1.0);   
-
+   //enableLighting();
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
 
@@ -71,7 +83,7 @@ void GLWidget::paintGL()
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
 
-   gluLookAt(0, 0, modelReader_.dimensions().maxZ * 3,
+   gluLookAt(0, 0, (modelReader_.dimensions().maxZ + fabs(modelReader_.dimensions().minZ)) * 2,
             0, 0, 0,
             0, 1, 0);
 
@@ -85,8 +97,8 @@ void GLWidget::paintGL()
    glRotatef(-90.0, 0.0, 0.0, 1.0);
    glRotatef(-90.0, 0.0, 1.0, 0.0);
 
-
-   glScaled(scale,scale,scale);
+   transformer_->performScalingOnModel();
+   transformer_->performTranslationOnModel();
    drawModel();
 
    if(true)
@@ -109,11 +121,11 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event) 
 {
-   x = event->x();
-   y = event->y();
+   // x = event->x();
+   // y = event->y();
 
-   x = ((x-(windowWidth_/2.0))/windowWidth_)*2.0;
-   y = ((y-(windowHeight_/2.0))/windowHeight_)*2.0;
+   // x = ((x-(windowWidth_/2.0))/windowWidth_)*2.0;
+   // y = ((y-(windowHeight_/2.0))/windowHeight_)*2.0;
 
    updateGL();
 }
@@ -130,8 +142,16 @@ void GLWidget::wheelEvent(QWheelEvent *event)
 {
    if (event->orientation() == Qt::Vertical) 
    {
-      if (event->delta() > 0) scale += 0.1;
-      else scale -= 0.1;
+      if (event->delta() > 0)
+      {
+         int valueChange = 1;
+         transformer_->rollBallMoved(valueChange);
+      }
+      else
+      {
+         int valueChange = -1;
+         transformer_->rollBallMoved(valueChange);
+      }
 
       updateGL();
    }
@@ -194,6 +214,7 @@ void GLWidget::drawGroundSheet()
    glEnable(GL_TEXTURE_2D);
    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
    glBindTexture(GL_TEXTURE_2D, groundTexture_);
+   glColor3f(1, 1, 1);
 
    glBegin(GL_QUADS);
    glTexCoord2f(0.0, 0.0);

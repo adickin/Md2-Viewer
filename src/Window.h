@@ -5,7 +5,10 @@
 #include <QWidget>
 #include <QtGui>
 #include "GLWidget.h"
-#include "SideBar.h"
+
+class SideBar;
+class AffineTransformer;
+class QGLWidget;
 
 /*
 ***************************************************************
@@ -55,6 +58,9 @@ private:
 
    GLWidget* glWidget_;
    SideBar* sideBar_;
+
+//Affine Transformations object
+   AffineTransformer* affineTransformations_;
 
 };
 

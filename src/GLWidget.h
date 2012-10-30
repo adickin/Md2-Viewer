@@ -7,13 +7,15 @@
 #include "DrawingDefs.h"
 #include "TextureManager.h"
 
+class AffineTransformer;
+
 
 class GLWidget : public QGLWidget 
 {
    Q_OBJECT
 
 public:
-   GLWidget(QWidget *parent);
+   GLWidget(AffineTransformer* transformer, QWidget *parent);
    ~GLWidget();
 
 public slots:
@@ -28,8 +30,6 @@ signals:
    
 
 protected:
-   float x, y, scale;
-
    void initializeGL();
    void resizeGL(int width, int height);
    void paintGL();
@@ -43,6 +43,8 @@ private:
    void drawGroundSheet();
    void drawModel();
    void drawWeapon();
+   void enableLighting();
+   void disableLighting();
 
 private:
    MD2Wrapper modelReader_;
@@ -62,6 +64,9 @@ private:
 
    bool drawVertexNormals_;
    bool drawFaceNormals_;
+
+   //Transformations
+   AffineTransformer* transformer_;
 
 };
 

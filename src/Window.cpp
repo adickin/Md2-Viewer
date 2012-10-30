@@ -2,6 +2,9 @@
 #include <QStringList>
 
 #include "Window.h"
+#include "GLWidget.h"
+#include "SideBar.h"
+#include "AffineTransformer.h"
 
 Window::Window(QWidget *parent) 
 :QMainWindow(parent) 
@@ -43,8 +46,10 @@ void Window::interfaceSetup()
    centralWidget_ = new QWidget(this);
    horizontalLayout_ = new QHBoxLayout(centralWidget_);
 
-   glWidget_ = new GLWidget(centralWidget_);
    sideBar_ = new SideBar(centralWidget_);
+
+   affineTransformations_ = new AffineTransformer(sideBar_);
+   glWidget_ = new GLWidget(affineTransformations_, centralWidget_);
    
    horizontalLayout_->addWidget(sideBar_);
    horizontalLayout_->addWidget(glWidget_);
@@ -92,6 +97,28 @@ void Window::setupSignalsAndSlots()
 
    connect(quitAction_, SIGNAL(triggered(bool))
          , this, SLOT(exitApplication(bool)));
+
+   //Affine Transformations Tab
+      //Scaling
+   connect(sideBar_->ui_.xScaleSlider, SIGNAL(valueChanged(int)),
+            affineTransformations_, SLOT(updateScalingOnModel()));
+   connect(sideBar_->ui_.yScaleSlider, SIGNAL(valueChanged(int)),
+            affineTransformations_, SLOT(updateScalingOnModel()));
+   connect(sideBar_->ui_.zScaleSlider, SIGNAL(valueChanged(int)),
+            affineTransformations_, SLOT(updateScalingOnModel()));
+   connect(sideBar_->ui_.allScaleSlider, SIGNAL(valueChanged(int)),
+            affineTransformations_, SLOT(updateScalingOnModel()));
+
+      //Translations
+   connect(sideBar_->ui_.xTranslationSlider, SIGNAL(valueChanged(int)),
+            affineTransformations_, SLOT(updateTranslationOnModel()));
+   connect(sideBar_->ui_.yTranslationSlider, SIGNAL(valueChanged(int)),
+            affineTransformations_, SLOT(updateTranslationOnModel()));
+   connect(sideBar_->ui_.zTranslationSlider, SIGNAL(valueChanged(int)),
+            affineTransformations_, SLOT(updateTranslationOnModel()));
+   connect(sideBar_->ui_.allTranslationSlider, SIGNAL(valueChanged(int)),
+            affineTransformations_, SLOT(updateTranslationOnModel()));
+   connect(affineTransformations_, SIGNAL(redraw()), glWidget_, SLOT(updateGL()));
 }
 
 void Window::openMd2ModelFileBrowser()
