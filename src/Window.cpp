@@ -5,6 +5,7 @@
 #include "GLWidget.h"
 #include "SideBar.h"
 #include "AffineTransformer.h"
+#include "ViewChanger.h"
 
 Window::Window(QWidget *parent) 
 :QMainWindow(parent) 
@@ -49,7 +50,8 @@ void Window::interfaceSetup()
    sideBar_ = new SideBar(centralWidget_);
 
    affineTransformations_ = new AffineTransformer(sideBar_);
-   glWidget_ = new GLWidget(affineTransformations_, centralWidget_);
+   viewChanger_ = new ViewChanger(sideBar_);
+   glWidget_ = new GLWidget(affineTransformations_, viewChanger_, centralWidget_);
    
    horizontalLayout_->addWidget(sideBar_);
    horizontalLayout_->addWidget(glWidget_);
@@ -94,6 +96,10 @@ void Window::setupSignalsAndSlots()
 
    connect(sideBar_->ui_.vertexNormalsCheckBox, SIGNAL(stateChanged(int)),
             glWidget_, SLOT(showVertexNormals(int)));
+   connect(sideBar_->ui_.faceNormalsCheckBox, SIGNAL(stateChanged(int)),
+            glWidget_, SLOT(showFaceNormals(int)));
+   connect(sideBar_->ui_.groundPatCheckBox, SIGNAL(stateChanged(int)),
+            glWidget_, SLOT(showGroundSheet(int)));
 
    connect(quitAction_, SIGNAL(triggered(bool))
          , this, SLOT(exitApplication(bool)));
@@ -118,7 +124,43 @@ void Window::setupSignalsAndSlots()
             affineTransformations_, SLOT(updateTranslationOnModel()));
    connect(sideBar_->ui_.allTranslationSlider, SIGNAL(valueChanged(int)),
             affineTransformations_, SLOT(updateTranslationOnModel()));
+
    connect(affineTransformations_, SIGNAL(redraw()), glWidget_, SLOT(updateGL()));
+   connect(sideBar_->ui_.resetAllButtonTransformation, SIGNAL(released()),
+            affineTransformations_, SLOT(resetTransformations()));
+
+   //View Location
+   connect(sideBar_->ui_.xLocationSlider, SIGNAL(valueChanged(int)),
+            viewChanger_, SLOT(updateViewLocationOfCamera()));
+   connect(sideBar_->ui_.yLocationSlider, SIGNAL(valueChanged(int)),
+            viewChanger_, SLOT(updateViewLocationOfCamera()));
+   connect(sideBar_->ui_.zLocationSlider, SIGNAL(valueChanged(int)),
+            viewChanger_, SLOT(updateViewLocationOfCamera()));
+
+   //View Direction
+   connect(sideBar_->ui_.xDirectionSlider, SIGNAL(valueChanged(int)),
+            viewChanger_, SLOT(updateViewDirectionOfCamera()));
+   connect(sideBar_->ui_.yDirectionSlider, SIGNAL(valueChanged(int)),
+            viewChanger_, SLOT(updateViewDirectionOfCamera()));
+   connect(sideBar_->ui_.zDirectionSlider, SIGNAL(valueChanged(int)),
+            viewChanger_, SLOT(updateViewDirectionOfCamera()));
+
+   //View Orientation
+   connect(sideBar_->ui_.xOrientationSlider, SIGNAL(valueChanged(int)),
+            viewChanger_, SLOT(updateViewOrientationOfCamera()));
+   connect(sideBar_->ui_.yOrientationSlider, SIGNAL(valueChanged(int)),
+            viewChanger_, SLOT(updateViewOrientationOfCamera()));
+   connect(sideBar_->ui_.zOrientationSlider, SIGNAL(valueChanged(int)),
+            viewChanger_, SLOT(updateViewOrientationOfCamera()));
+
+   connect(viewChanger_, SIGNAL(redraw()), glWidget_, SLOT(updateGL()));
+   connect(sideBar_->ui_.resetAllButtonView, SIGNAL(released()),
+            viewChanger_, SLOT(resetView()));
+
+
+
+   connect(sideBar_->ui_.projectionComboBox, SIGNAL(currentIndexChanged(const QString&)),
+      glWidget_, SLOT(setProjectionType(const QString&)));
 }
 
 void Window::openMd2ModelFileBrowser()

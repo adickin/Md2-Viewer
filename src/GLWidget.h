@@ -8,6 +8,7 @@
 #include "TextureManager.h"
 
 class AffineTransformer;
+class ViewChanger;
 
 
 class GLWidget : public QGLWidget 
@@ -15,7 +16,7 @@ class GLWidget : public QGLWidget
    Q_OBJECT
 
 public:
-   GLWidget(AffineTransformer* transformer, QWidget *parent);
+   GLWidget(AffineTransformer* transformer, ViewChanger* viewChanger, QWidget *parent);
    ~GLWidget();
 
 public slots:
@@ -25,6 +26,9 @@ public slots:
    void openWeaponTextureFile(QString& filePath);
    void changeDisplayMode(const QString& newMode);
    void showVertexNormals(int state);
+   void showFaceNormals(int state);
+   void showGroundSheet(int state);
+   void setProjectionType(const QString& selection);
 
 signals:
    
@@ -39,12 +43,16 @@ protected:
    void wheelEvent(QWheelEvent *event);
 
 private:
-   void drawVertexNormals();
+   void drawModelVertexNormals();
+   void drawWeaponVertexNormals();
+
+   void drawModelFaceNormals();
+   void drawWeaponFaceNormals();
+
    void drawGroundSheet();
    void drawModel();
    void drawWeapon();
    void enableLighting();
-   void disableLighting();
 
 private:
    MD2Wrapper modelReader_;
@@ -64,9 +72,14 @@ private:
 
    bool drawVertexNormals_;
    bool drawFaceNormals_;
+   bool drawGroundSheet_;
 
    //Transformations
    AffineTransformer* transformer_;
+   //Views
+   ViewChanger* viewChanger_;
+
+   QString projectionSelected_;
 
 };
 

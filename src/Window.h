@@ -8,6 +8,7 @@
 
 class SideBar;
 class AffineTransformer;
+class ViewChanger;
 class QGLWidget;
 
 /*
@@ -61,6 +62,9 @@ private:
 
 //Affine Transformations object
    AffineTransformer* affineTransformations_;
+
+   //view changer object
+   ViewChanger* viewChanger_;
 
 };
 

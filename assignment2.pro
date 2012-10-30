@@ -24,7 +24,8 @@ HEADERS +=  src/TextureManager.h \
             src/md2.h \
             src/MD2Wrapper.h \
             src/MathVector.h \
-            src/AffineTransformer.h
+            src/AffineTransformer.h ]\
+            src/ViewChanger.h
             
 SOURCES +=  src/GLWidget.cpp \
             src/main.cpp \
@@ -35,6 +36,7 @@ SOURCES +=  src/GLWidget.cpp \
             src/MD2Wrapper.cpp \
             src/MathVector.cpp \
             src/TextureManager.cpp \
-            src/AffineTransformer.cpp
+            src/AffineTransformer.cpp \
+            src/ViewChanger.cpp
 
 FORMS +=    src/SideBar.ui

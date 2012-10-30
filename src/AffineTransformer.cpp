@@ -191,3 +191,22 @@ void AffineTransformer::rollBallMoved(int valueChange)
    sideBar_->ui_.zScaleSlider->setValue((int)(scalingValues_.zValue*50.0));
    emit redraw();
 }
+
+void AffineTransformer::resetTransformations()
+{
+   scalingValues_.xValue = 1;
+   scalingValues_.yValue = 1;
+   scalingValues_.zValue = 1;
+
+   sideBar_->ui_.xScaleSlider->setValue((int)(scalingValues_.xValue*50.0));
+   sideBar_->ui_.yScaleSlider->setValue((int)(scalingValues_.yValue*50.0));
+   sideBar_->ui_.zScaleSlider->setValue((int)(scalingValues_.zValue*50.0));
+
+   translationValues_.xValue = 0;
+   translationValues_.yValue = 0;
+   translationValues_.zValue = 0;
+
+   sideBar_->ui_.xTranslationSlider->setValue((int)translationValues_.xValue);
+   sideBar_->ui_.yTranslationSlider->setValue((int)translationValues_.yValue);
+   sideBar_->ui_.zTranslationSlider->setValue((int)translationValues_.zValue);
+}

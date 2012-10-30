@@ -8,12 +8,7 @@
 */
 #include <QObject>
 
-struct Values
-{
-   float xValue;
-   float yValue;
-   float zValue;
-};
+
 
 class SideBar;
 
@@ -28,9 +23,17 @@ public:
    void performTranslationOnModel();
    void rollBallMoved(int valueChange);
 
+   struct Values
+   {
+      float xValue;
+      float yValue;
+      float zValue;
+   };
+
 public slots:
    void updateScalingOnModel();
    void updateTranslationOnModel();
+   void resetTransformations();
 
 signals:
    void redraw();

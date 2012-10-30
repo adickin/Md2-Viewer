@@ -7,8 +7,9 @@
 #include "MathVector.h"
 #include "math.h"
 #include "AffineTransformer.h"
+#include "ViewChanger.h"
 
-GLWidget::GLWidget(AffineTransformer* transformer, QWidget *parent) 
+GLWidget::GLWidget(AffineTransformer* transformer, ViewChanger* viewChanger, QWidget *parent) 
    :QGLWidget (parent) 
    ,displayMode_(DrawingDefines::WIREFRAME)
    ,weaponLoaded_(false)
@@ -16,7 +17,10 @@ GLWidget::GLWidget(AffineTransformer* transformer, QWidget *parent)
    ,textureLoadedForWeapon_(false)
    ,drawVertexNormals_(false)
    ,drawFaceNormals_(false)
+   ,drawGroundSheet_(true)
    ,transformer_(transformer)
+   ,viewChanger_(viewChanger)
+   ,projectionSelected_(QString("Perspective"))
 {
    texManager_ = new TextureManager();
    setMinimumSize(500, 500);
@@ -33,14 +37,14 @@ void GLWidget::initializeGL()
    enableLighting();
    
    //load the ground texture only once.
-   QString groundTexturePath("/work/assignment2/src/ground.bmp");
+   QString groundTexturePath("./src/ground.bmp");
    groundTexture_ = texManager_->loadTextureFromFile(groundTexturePath);
    
    //temporary todo
-   QString fileName("/work/assignment2/models-5/sephiroth/sephiroth.md2");
+   QString fileName("./models-5/sephiroth/sephiroth.md2");
    openModelFile(fileName);
    
-   QString fileName2("/work/assignment2/models-5/sephiroth/sephiroth.bmp");
+   QString fileName2("./models-5/sephiroth/sephiroth.bmp");
    openModelTextureFile(fileName2);
 }
 
@@ -52,15 +56,8 @@ void GLWidget::enableLighting()
    glEnable(GL_COLOR_MATERIAL);
    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 
-   GLfloat position[] = {0, 20, 0, 1};
+   GLfloat position[] = {5, 5, 5, 1};
    glLightfv(GL_LIGHT0, GL_POSITION, position);
-}
-
-void GLWidget::disableLighting()
-{
-   glDisable(GL_LIGHTING);
-   glDisable(GL_LIGHT0);
-   glDisable(GL_COLOR_MATERIAL);
 }
 
 void GLWidget::resizeGL(int width, int height) 
@@ -74,24 +71,34 @@ void GLWidget::paintGL()
 {
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
    glColor3f(1.0, 1.0, 1.0);   
-   //enableLighting();
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
 
-   gluPerspective(60, (GLfloat)windowWidth_/windowHeight_, 1.0, 1000.0);
+   if(QString("Perspective") == projectionSelected_)
+   {
+      viewChanger_->setPerspective(windowWidth_, windowHeight_);
+   }
+   else if(QString("Parallel") == projectionSelected_)
+   {
+      viewChanger_->setParallel(modelReader_.dimensions());
+   }
 
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
 
-   gluLookAt(0, 0, (modelReader_.dimensions().maxZ + fabs(modelReader_.dimensions().minZ)) * 2,
-            0, 0, 0,
-            0, 1, 0);
+   if(QString("Perspective") == projectionSelected_)
+   {
+      viewChanger_->setViewPosition();
+   }
 
    glPushMatrix();
 
-   glPushMatrix();
-      drawGroundSheet();
-   glPopMatrix();
+   if(drawGroundSheet_)
+   {
+      glPushMatrix();
+         drawGroundSheet();
+      glPopMatrix();
+   }
    
    //Rotate the model to be upright.
    glRotatef(-90.0, 0.0, 0.0, 1.0);
@@ -101,9 +108,17 @@ void GLWidget::paintGL()
    transformer_->performTranslationOnModel();
    drawModel();
 
-   if(true)
+   if(drawVertexNormals_)
+   {  
+      glPushMatrix();
+         drawModelVertexNormals();
+      glPopMatrix();
+   }
+   if(drawFaceNormals_)
    {
-      drawVertexNormals();
+      glPushMatrix();
+         drawModelFaceNormals();
+      glPopMatrix();
    }
    glPopMatrix();
 
@@ -115,7 +130,7 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
 {
    if (event->button() == Qt::MidButton) 
    {
-      close();
+      //close();
    }
 }
 
@@ -162,6 +177,7 @@ void GLWidget::openModelFile(QString& filePath)
    modelReader_.loadModelFromFile(filePath);
    textureLoadedForMd2Model_ = false;
    weaponLoaded_ = false;
+   viewChanger_->setDirectionZValue((modelReader_.dimensions().maxZ+fabs(modelReader_.dimensions().minZ))*2);
 }
 
 void GLWidget::openModelTextureFile(QString& filePath)
@@ -209,29 +225,49 @@ void GLWidget::showVertexNormals(int state)
    updateGL();
 }
 
+void GLWidget::showFaceNormals(int state)
+{
+   drawFaceNormals_ = (state == (int)Qt::Checked);
+   updateGL();
+}
+
+void GLWidget::showGroundSheet(int state)
+{
+   drawGroundSheet_ = (state == (int)Qt::Checked);
+   updateGL();
+}
+
+void GLWidget::setProjectionType(const QString& selection)
+{
+   projectionSelected_ = selection;
+   updateGL();
+}
+
 void GLWidget::drawGroundSheet()
 {
    glEnable(GL_TEXTURE_2D);
+   glDisable(GL_LIGHTING);
    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
    glBindTexture(GL_TEXTURE_2D, groundTexture_);
    glColor3f(1, 1, 1);
 
    glBegin(GL_QUADS);
    glTexCoord2f(0.0, 0.0);
-   glVertex3f(-30, modelReader_.dimensions().minZ, -30 );
+   glVertex3f(-25, modelReader_.dimensions().minZ-1, -25 );
 
    glTexCoord2f(1.0, 0.0);
-   glVertex3f(30, modelReader_.dimensions().minZ, -30);
+   glVertex3f(25, modelReader_.dimensions().minZ-1, -25);
 
    glTexCoord2f(1.0, 1.0);
-   glVertex3f(30, modelReader_.dimensions().minZ, 30);
+   glVertex3f(25, modelReader_.dimensions().minZ-1, 25);
 
    glTexCoord2f(0.0, 1.0);
-   glVertex3f(-30, modelReader_.dimensions().minZ, 30);
+   glVertex3f(-25, modelReader_.dimensions().minZ-1, 25);
 
    glEnd();
 
    glDisable(GL_TEXTURE_2D);
+   glEnable(GL_LIGHTING);
 }
 
 void GLWidget::drawModel()
@@ -405,19 +441,118 @@ void GLWidget::drawWeapon()
    glDisable(GL_TEXTURE_2D);
 }
 
-void GLWidget::drawVertexNormals()
+void GLWidget::drawModelVertexNormals()
 {
+   glDisable(GL_LIGHTING);
    glColor3f(1.0, 0.0, 0.0);
    for(int i = 0; i < modelReader_.numberOfVertices(); i++)
    {
       MathVector* vertexNormal = modelReader_.vertexNormals()->at(i);
       VertexCoordinate vertexCoordinate = modelReader_.retrieveVertexCoordinatesAt(i);
 
-      glBegin(GL_LINE);
+      glBegin(GL_LINES);
       glVertex3f(vertexCoordinate.x, vertexCoordinate.y,
          vertexCoordinate.z);
       glVertex3f((vertexNormal->x()*2)+vertexCoordinate.x, (vertexNormal->y()*2)+vertexCoordinate.y,
          (vertexNormal->z()*2)+vertexCoordinate.z);
       glEnd();
    }
+   glEnable(GL_LIGHTING);
+   if(weaponLoaded_)
+   {
+      drawWeaponVertexNormals();
+   }
+}
+
+void GLWidget::drawWeaponVertexNormals()
+{
+   glDisable(GL_LIGHTING);
+   glColor3f(1.0, 0.0, 0.0);
+   for(int i = 0; i < weaponReader_.numberOfVertices(); i++)
+   {
+      MathVector* vertexNormal = weaponReader_.vertexNormals()->at(i);
+      VertexCoordinate vertexCoordinate = weaponReader_.retrieveVertexCoordinatesAt(i);
+
+      glBegin(GL_LINES);
+      glVertex3f(vertexCoordinate.x, vertexCoordinate.y,
+         vertexCoordinate.z);
+      glVertex3f((vertexNormal->x()*2)+vertexCoordinate.x, (vertexNormal->y()*2)+vertexCoordinate.y,
+         (vertexNormal->z()*2)+vertexCoordinate.z);
+      glEnd();
+   }
+   glEnable(GL_LIGHTING);
+}
+
+void GLWidget::drawModelFaceNormals()
+{
+   glDisable(GL_LIGHTING);
+   glColor3f(0.0, 0.0, 1.0);
+
+   for(int i = 0; i < modelReader_.numberOfTriangles(); i++)
+   {
+      int indexOne = 0;
+      int indexTwo = 0;
+      int indexThree = 0;
+      modelReader_.retrieveTriangleVertexIndicies(i, &indexOne,
+                                              &indexTwo, &indexThree);
+
+      MathVector* faceNormals = modelReader_.faceNormals()->at(i);
+
+
+      VertexCoordinate vertexOne = modelReader_.retrieveVertexCoordinatesAt(indexOne);
+      VertexCoordinate vertexTwo = modelReader_.retrieveVertexCoordinatesAt(indexTwo);
+      VertexCoordinate vertexThree = modelReader_.retrieveVertexCoordinatesAt(indexThree);
+
+      VertexCoordinate middleOfTriangle;
+      middleOfTriangle.x = ((vertexOne.x + vertexTwo.x + vertexThree.x)/3);
+      middleOfTriangle.y = ((vertexOne.y + vertexTwo.y + vertexThree.y)/3);
+      middleOfTriangle.z = ((vertexOne.z + vertexTwo.z + vertexThree.z)/3);
+
+      glBegin(GL_LINES);
+      glVertex3f(middleOfTriangle.x, middleOfTriangle.y,
+         middleOfTriangle.z);
+      glVertex3f((faceNormals->x()*2)+middleOfTriangle.x, (faceNormals->y()*2)+middleOfTriangle.y,
+         (faceNormals->z()*2)+middleOfTriangle.z);
+      glEnd();
+   }
+   glEnable(GL_LIGHTING);
+
+   if(weaponLoaded_)
+   {
+      drawWeaponFaceNormals();
+   }
+}
+
+void GLWidget::drawWeaponFaceNormals()
+{
+   glDisable(GL_LIGHTING);
+   glColor3f(1.0, 0.0, 0.0);
+   for(int i = 0; i < weaponReader_.numberOfTriangles(); i++)
+   {
+      int indexOne = 0;
+      int indexTwo = 0;
+      int indexThree = 0;
+      weaponReader_.retrieveTriangleVertexIndicies(i, &indexOne,
+                                              &indexTwo, &indexThree);
+
+      MathVector* faceNormals = weaponReader_.faceNormals()->at(i);
+
+
+      VertexCoordinate vertexOne = weaponReader_.retrieveVertexCoordinatesAt(indexOne);
+      VertexCoordinate vertexTwo = weaponReader_.retrieveVertexCoordinatesAt(indexTwo);
+      VertexCoordinate vertexThree = weaponReader_.retrieveVertexCoordinatesAt(indexThree);
+
+      VertexCoordinate middleOfTriangle;
+      middleOfTriangle.x = ((vertexOne.x + vertexTwo.x + vertexThree.x)/3);
+      middleOfTriangle.y = ((vertexOne.y + vertexTwo.y + vertexThree.y)/3);
+      middleOfTriangle.z = ((vertexOne.z + vertexTwo.z + vertexThree.z)/3);
+
+      glBegin(GL_LINES);
+      glVertex3f(middleOfTriangle.x, middleOfTriangle.y,
+         middleOfTriangle.z);
+      glVertex3f((faceNormals->x()*2)+middleOfTriangle.x, (faceNormals->y()*2)+middleOfTriangle.y,
+         (faceNormals->z()*2)+middleOfTriangle.z);
+      glEnd();
+   }
+   glEnable(GL_LIGHTING);
 }

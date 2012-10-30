@@ -35,7 +35,7 @@
    <item>
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="pageOne">
       <property name="geometry">
@@ -214,7 +214,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="displayNormalsCheckBox">
+              <widget class="QCheckBox" name="faceNormalsCheckBox">
                <property name="text">
                 <string>Display Face Normals</string>
                </property>
@@ -231,6 +231,9 @@
               <widget class="QCheckBox" name="groundPatCheckBox">
                <property name="text">
                 <string>Display Ground Pattern</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -491,7 +494,7 @@
                   <enum>QSlider::TicksBelow</enum>
                  </property>
                  <property name="tickInterval">
-                  <number>50</number>
+                  <number>180</number>
                  </property>
                 </widget>
                </item>
@@ -513,7 +516,7 @@
                   <enum>QSlider::TicksBelow</enum>
                  </property>
                  <property name="tickInterval">
-                  <number>50</number>
+                  <number>180</number>
                  </property>
                 </widget>
                </item>
@@ -535,7 +538,7 @@
                   <enum>QSlider::TicksBelow</enum>
                  </property>
                  <property name="tickInterval">
-                  <number>50</number>
+                  <number>180</number>
                  </property>
                 </widget>
                </item>
@@ -773,16 +776,6 @@
              <item>
               <layout class="QVBoxLayout" name="verticalLayout_39">
                <item>
-                <widget class="QLabel" name="label_48">
-                 <property name="text">
-                  <string>All:</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <widget class="QLabel" name="label_49">
                  <property name="text">
                   <string>X:</string>
@@ -817,31 +810,15 @@
              <item>
               <layout class="QVBoxLayout" name="verticalLayout_40">
                <item>
-                <widget class="QSlider" name="allLocationSlider">
-                 <property name="minimum">
-                  <number>-180</number>
-                 </property>
-                 <property name="maximum">
-                  <number>180</number>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="tickPosition">
-                  <enum>QSlider::TicksBelow</enum>
-                 </property>
-                 <property name="tickInterval">
-                  <number>180</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <widget class="QSlider" name="xLocationSlider">
                  <property name="minimum">
-                  <number>-180</number>
+                  <number>-50</number>
                  </property>
                  <property name="maximum">
-                  <number>180</number>
+                  <number>50</number>
+                 </property>
+                 <property name="sliderPosition">
+                  <number>0</number>
                  </property>
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -850,17 +827,17 @@
                   <enum>QSlider::TicksBelow</enum>
                  </property>
                  <property name="tickInterval">
-                  <number>180</number>
+                  <number>50</number>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QSlider" name="yLocationSlider">
                  <property name="minimum">
-                  <number>-180</number>
+                  <number>-50</number>
                  </property>
                  <property name="maximum">
-                  <number>180</number>
+                  <number>50</number>
                  </property>
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -869,17 +846,17 @@
                   <enum>QSlider::TicksBelow</enum>
                  </property>
                  <property name="tickInterval">
-                  <number>180</number>
+                  <number>50</number>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QSlider" name="zLocationSlider">
                  <property name="minimum">
-                  <number>-180</number>
+                  <number>-50</number>
                  </property>
                  <property name="maximum">
-                  <number>180</number>
+                  <number>50</number>
                  </property>
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -888,7 +865,7 @@
                   <enum>QSlider::TicksBelow</enum>
                  </property>
                  <property name="tickInterval">
-                  <number>180</number>
+                  <number>50</number>
                  </property>
                 </widget>
                </item>
@@ -918,16 +895,6 @@
             <layout class="QHBoxLayout" name="horizontalLayout_13">
              <item>
               <layout class="QVBoxLayout" name="verticalLayout_42">
-               <item>
-                <widget class="QLabel" name="label_53">
-                 <property name="text">
-                  <string>All:</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
                <item>
                 <widget class="QLabel" name="label_54">
                  <property name="text">
@@ -963,31 +930,18 @@
              <item>
               <layout class="QVBoxLayout" name="verticalLayout_43">
                <item>
-                <widget class="QSlider" name="allOrientationSlider">
-                 <property name="minimum">
-                  <number>-180</number>
-                 </property>
-                 <property name="maximum">
-                  <number>180</number>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="tickPosition">
-                  <enum>QSlider::TicksBelow</enum>
-                 </property>
-                 <property name="tickInterval">
-                  <number>180</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <widget class="QSlider" name="xOrientationSlider">
                  <property name="minimum">
-                  <number>-180</number>
+                  <number>-1</number>
                  </property>
                  <property name="maximum">
-                  <number>180</number>
+                  <number>1</number>
+                 </property>
+                 <property name="singleStep">
+                  <number>1</number>
+                 </property>
+                 <property name="sliderPosition">
+                  <number>0</number>
                  </property>
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -996,17 +950,17 @@
                   <enum>QSlider::TicksBelow</enum>
                  </property>
                  <property name="tickInterval">
-                  <number>180</number>
+                  <number>1</number>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QSlider" name="yOrientationSlider">
                  <property name="minimum">
-                  <number>-180</number>
+                  <number>-1</number>
                  </property>
                  <property name="maximum">
-                  <number>180</number>
+                  <number>1</number>
                  </property>
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -1015,17 +969,17 @@
                   <enum>QSlider::TicksBelow</enum>
                  </property>
                  <property name="tickInterval">
-                  <number>180</number>
+                  <number>1</number>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QSlider" name="zOrientationSlider">
                  <property name="minimum">
-                  <number>-180</number>
+                  <number>-1</number>
                  </property>
                  <property name="maximum">
-                  <number>180</number>
+                  <number>1</number>
                  </property>
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -1034,7 +988,7 @@
                   <enum>QSlider::TicksBelow</enum>
                  </property>
                  <property name="tickInterval">
-                  <number>180</number>
+                  <number>1</number>
                  </property>
                 </widget>
                </item>
@@ -1064,16 +1018,6 @@
             <layout class="QHBoxLayout" name="horizontalLayout_14">
              <item>
               <layout class="QVBoxLayout" name="verticalLayout_45">
-               <item>
-                <widget class="QLabel" name="label_58">
-                 <property name="text">
-                  <string>All:</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
                <item>
                 <widget class="QLabel" name="label_59">
                  <property name="text">
@@ -1108,25 +1052,6 @@
              </item>
              <item>
               <layout class="QVBoxLayout" name="verticalLayout_46">
-               <item>
-                <widget class="QSlider" name="allDirectionSlider">
-                 <property name="minimum">
-                  <number>-180</number>
-                 </property>
-                 <property name="maximum">
-                  <number>180</number>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="tickPosition">
-                  <enum>QSlider::TicksBelow</enum>
-                 </property>
-                 <property name="tickInterval">
-                  <number>180</number>
-                 </property>
-                </widget>
-               </item>
                <item>
                 <widget class="QSlider" name="xDirectionSlider">
                  <property name="minimum">
@@ -1166,7 +1091,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QSlider" name="zScaleSlider_4">
+                <widget class="QSlider" name="zDirectionSlider">
                  <property name="minimum">
                   <number>-180</number>
                  </property>
@@ -1189,6 +1114,20 @@
             </layout>
            </item>
           </layout>
+         </item>
+         <item>
+          <widget class="QComboBox" name="projectionComboBox">
+           <item>
+            <property name="text">
+             <string>Perspective</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Parallel</string>
+            </property>
+           </item>
+          </widget>
          </item>
          <item>
           <spacer name="verticalSpacer_6">
