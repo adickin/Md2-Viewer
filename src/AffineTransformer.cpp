@@ -12,6 +12,8 @@
 
 #include "AffineTransformer.h"
 #include "SideBar.h"
+#include "math.h"
+#include "MathVector.h"
 
 
 AffineTransformer::AffineTransformer(SideBar* sideBar)
@@ -26,6 +28,9 @@ AffineTransformer::AffineTransformer(SideBar* sideBar)
    translationValues_.xValue = 0;
    translationValues_.yValue = 0;
    translationValues_.zValue = 0;
+
+   matrix_ = new GLfloat[16];
+
 }
 
 AffineTransformer::~AffineTransformer()
@@ -209,4 +214,93 @@ void AffineTransformer::resetTransformations()
    sideBar_->ui_.xTranslationSlider->setValue((int)translationValues_.xValue);
    sideBar_->ui_.yTranslationSlider->setValue((int)translationValues_.yValue);
    sideBar_->ui_.zTranslationSlider->setValue((int)translationValues_.zValue);
+}
+
+void AffineTransformer::setWidthAndHeight(int width, int height)
+{
+   width_ = width;
+   height_ = height;
+}
+
+void AffineTransformer::findTrackPoint(int x, int y, double& sphereX, double& sphereY, double& sphereZ)
+{
+   sphereX = ((double)x/(double)width_) * 2.0 - 1.0;
+   sphereY = ((double)y/(double)height_) * 2.0 - 1.0;
+
+   double sqr = sphereX*sphereX + sphereY*sphereY;
+   if(sqr > 1.0)
+   {
+      sphereZ = 0.0;
+   }
+   else
+   {
+      sphereZ = sqrt(1 - sqr);
+   }
+}
+
+/*
+***************************************************************
+*
+*
+*
+***************************************************************
+*/
+void AffineTransformer::mousePressEvent(QMouseEvent* event)
+{
+   findTrackPoint(event->x(), event->y(), oldX_, oldY_, oldZ_);
+}
+
+void AffineTransformer::mouseMoveEvent(QMouseEvent* event)
+{
+   double newX, newY, newZ;
+   findTrackPoint(event->x(), event->y(), newX, newY, newZ);
+
+   // find cross product
+   double cX = newY * oldZ_ - oldY_ * newZ;
+   double cY = newX * oldZ_ - oldX_ * newZ;
+   double cZ = newX * oldY_ - oldX_ * newY;
+   double A = cX * cX + cY * cY + cZ * cZ;
+
+   // find the angle
+   double theta = asin ( A ) * 180.0 / M_PI; // convert to radians
+
+   // ignore regions outside our trackball
+   if (oldZ_ == 0.0 || newZ == 0.0)
+   {
+      theta = 0.0;
+   }
+
+   // save the old matrix so we don't mess anythin gup
+   glPushMatrix();
+   glLoadIdentity();
+
+   // our newly calculated rotation
+   glRotatef(theta*10.0, cZ, cX, cY); // * 10 as rotation is small otherwise
+
+   // let OpenGL do our matrix multiplication for us
+   glMultMatrixf(matrix_);
+   glGetFloatv(GL_MODELVIEW_MATRIX, matrix_);
+
+   // return transformations to their old value
+   glPopMatrix();
+
+   // update old values
+   findTrackPoint(event->x(), event->y(), oldX_, oldY_, oldZ_);
+
+   // request a redraw
+   emit redraw();
+}
+
+GLfloat* AffineTransformer::matrix()
+{
+   static bool happened = false;
+   if(!happened)
+   {
+      glPushMatrix();
+         glLoadIdentity();
+         glGetFloatv(GL_MODELVIEW_MATRIX, matrix_);
+      glPopMatrix();
+      happened = true;
+   }
+   return matrix_;
 }

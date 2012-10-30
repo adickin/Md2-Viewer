@@ -7,6 +7,8 @@
 *********************************************************************
 */
 #include <QObject>
+#include <QMouseEvent>
+#include <QGLWidget>
 
 
 
@@ -22,6 +24,14 @@ public:
    void performScalingOnModel();
    void performTranslationOnModel();
    void rollBallMoved(int valueChange);
+   void setWidthAndHeight(int width, int height);
+
+   void findTrackPoint(int x, int y, double& sphereX, double& sphereY, double& sphereZ);
+
+   void mousePressEvent(QMouseEvent* event);
+   void mouseMoveEvent(QMouseEvent* event);
+
+   GLfloat* matrix();
 
    struct Values
    {
@@ -43,4 +53,12 @@ private:
 
    Values translationValues_;
    Values scalingValues_;
+
+   int width_;
+   int height_;
+   double oldX_;
+   double oldY_;
+   double oldZ_;
+
+   GLfloat* matrix_;
 };

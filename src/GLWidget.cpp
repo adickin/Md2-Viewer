@@ -64,6 +64,7 @@ void GLWidget::resizeGL(int width, int height)
 {
    windowWidth_ = width;
    windowHeight_ = height;
+   transformer_->setWidthAndHeight(width, height);
    glViewport(0,0,width, height);
 }
 
@@ -106,6 +107,7 @@ void GLWidget::paintGL()
 
    transformer_->performScalingOnModel();
    transformer_->performTranslationOnModel();
+   glMultMatrixf(transformer_->matrix());
    drawModel();
 
    if(drawVertexNormals_)
@@ -128,19 +130,15 @@ void GLWidget::paintGL()
 
 void GLWidget::mousePressEvent(QMouseEvent *event) 
 {
-   if (event->button() == Qt::MidButton) 
+   if (event->button() == Qt::LeftButton) 
    {
-      //close();
+      transformer_->mousePressEvent(event);
    }
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event) 
 {
-   // x = event->x();
-   // y = event->y();
-
-   // x = ((x-(windowWidth_/2.0))/windowWidth_)*2.0;
-   // y = ((y-(windowHeight_/2.0))/windowHeight_)*2.0;
+   transformer_->mouseMoveEvent(event);
 
    updateGL();
 }
@@ -418,18 +416,44 @@ void GLWidget::drawWeapon()
       TextureCoordinate textureTwo = weaponReader_.retrieveTextureCoordinateAt(texTwo);
       TextureCoordinate textureThree = weaponReader_.retrieveTextureCoordinateAt(texThree);
 
-      MathVector* vector = weaponReader_.vertexNormals()->at(indexOne);
+      //Point One.
+      MathVector* vector;
+      if(displayMode_== DrawingDefines::FLAT_SHADING)
+      {
+         vector = weaponReader_.faceNormals()->at(currentTriangle);
+      }
+      else
+      {
+         vector = weaponReader_.vertexNormals()->at(indexOne);
+      }
       glNormal3f(vector->x(), vector->y(), vector->z());
       glTexCoord2f((float) textureOne.u/weaponReader_.skinWidth(),
                   (float) textureOne.v/weaponReader_.skinHeight());
       glVertex3f(vertexOne.x, vertexOne.y, vertexOne.z);
 
-      vector = weaponReader_.vertexNormals()->at(indexTwo);
+      //Point Two
+      if(displayMode_== DrawingDefines::FLAT_SHADING)
+      {
+         vector = weaponReader_.faceNormals()->at(currentTriangle);
+      }
+      else
+      {
+         vector = weaponReader_.vertexNormals()->at(indexTwo);
+      }
       glNormal3f(vector->x(), vector->y(), vector->z());
       glTexCoord2f((float) textureTwo.u/weaponReader_.skinWidth(),
                (float) textureTwo.v/weaponReader_.skinHeight());
       glVertex3f(vertexTwo.x, vertexTwo.y, vertexTwo.z);
 
+      //Point Three
+      if(displayMode_== DrawingDefines::FLAT_SHADING)
+      {
+         vector = weaponReader_.faceNormals()->at(currentTriangle);
+      }
+      else
+      {
+         vector = weaponReader_.vertexNormals()->at(indexThree);
+      }
       vector = weaponReader_.vertexNormals()->at(indexThree);
       glNormal3f(vector->x(), vector->y(), vector->z());
       glTexCoord2f((float) textureThree.u/weaponReader_.skinWidth(),
@@ -526,7 +550,7 @@ void GLWidget::drawModelFaceNormals()
 void GLWidget::drawWeaponFaceNormals()
 {
    glDisable(GL_LIGHTING);
-   glColor3f(1.0, 0.0, 0.0);
+   glColor3f(0.0, 0.0, 1.0);
    for(int i = 0; i < weaponReader_.numberOfTriangles(); i++)
    {
       int indexOne = 0;
