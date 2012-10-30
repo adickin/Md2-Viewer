@@ -18,6 +18,7 @@ GLWidget::GLWidget(QWidget *parent)
    texManager_ = new TextureManager();
    setMinimumSize(500, 500);
    scale = 1;
+
 }
 
 GLWidget::~GLWidget() { }
@@ -27,16 +28,20 @@ void GLWidget::initializeGL()
    glEnable(GL_DEPTH_TEST);
    glEnable(GL_RESCALE_NORMAL);
 
-   glClearColor(0.0,0.0,0.0,0.5);
+   glClearColor(0.3,0.6,0.5,0.5);
+   
+   //load the ground texture only once.
+   QString groundTexturePath("/work/assignment2/src/ground.bmp");
+   groundTexture_ = texManager_->loadTextureFromFile(groundTexturePath);
 
-   // glEnable(GL_LIGHTING);
-   // glEnable(GL_LIGHT0);
+   glEnable(GL_LIGHTING);
+   glEnable(GL_LIGHT0);
 
-   // glEnable(GL_COLOR_MATERIAL);
-   // glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+   glEnable(GL_COLOR_MATERIAL);
+   glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 
-   // GLfloat position[] = {100, 100, 100, 1};
-   // glLightfv(GL_LIGHT0, GL_POSITION, position);
+   GLfloat position[] = {0, 0, 20, 1};
+   glLightfv(GL_LIGHT0, GL_POSITION, position);
 
    //temporary todo
    QString fileName("/work/assignment2/models-5/sephiroth/sephiroth.md2");
@@ -69,20 +74,28 @@ void GLWidget::paintGL()
    gluLookAt(0, 0, modelReader_.dimensions().maxZ * 3,
             0, 0, 0,
             0, 1, 0);
-   glScaled(scale,scale,scale);
-    
+
    glPushMatrix();
+
+   glPushMatrix();
+      drawGroundSheet();
+   glPopMatrix();
+   
    //Rotate the model to be upright.
    glRotatef(-90.0, 0.0, 0.0, 1.0);
    glRotatef(-90.0, 0.0, 1.0, 0.0);
 
+
+   glScaled(scale,scale,scale);
    drawModel();
 
-   if(drawVertexNormals_)
+   if(true)
    {
       drawVertexNormals();
    }
    glPopMatrix();
+
+
    glFlush();
 }
 
@@ -176,6 +189,30 @@ void GLWidget::showVertexNormals(int state)
    updateGL();
 }
 
+void GLWidget::drawGroundSheet()
+{
+   glEnable(GL_TEXTURE_2D);
+   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+   glBindTexture(GL_TEXTURE_2D, groundTexture_);
+
+   glBegin(GL_QUADS);
+   glTexCoord2f(0.0, 0.0);
+   glVertex3f(-30, modelReader_.dimensions().minZ, -30 );
+
+   glTexCoord2f(1.0, 0.0);
+   glVertex3f(30, modelReader_.dimensions().minZ, -30);
+
+   glTexCoord2f(1.0, 1.0);
+   glVertex3f(30, modelReader_.dimensions().minZ, 30);
+
+   glTexCoord2f(0.0, 1.0);
+   glVertex3f(-30, modelReader_.dimensions().minZ, 30);
+
+   glEnd();
+
+   glDisable(GL_TEXTURE_2D);
+}
+
 void GLWidget::drawModel()
 {
    switch(displayMode_)
@@ -234,19 +271,44 @@ void GLWidget::drawModel()
       TextureCoordinate textureTwo = modelReader_.retrieveTextureCoordinateAt(texTwo);
       TextureCoordinate textureThree = modelReader_.retrieveTextureCoordinateAt(texThree);
 
-      MathVector* vector = modelReader_.vertexNormals()->at(indexOne);
+      //Point One.
+      MathVector* vector;
+      if(displayMode_== DrawingDefines::FLAT_SHADING)
+      {
+         vector = modelReader_.faceNormals()->at(currentTriangle);
+      }
+      else
+      {
+         vector = modelReader_.vertexNormals()->at(indexOne);
+      }
       glNormal3f(vector->x(), vector->y(), vector->z());
       glTexCoord2f((float) textureOne.u/modelReader_.skinWidth(),
                   (float) textureOne.v/modelReader_.skinHeight());
       glVertex3f(vertexOne.x, vertexOne.y, vertexOne.z);
 
-      vector = modelReader_.vertexNormals()->at(indexTwo);
+      //Point Two
+      if(displayMode_== DrawingDefines::FLAT_SHADING)
+      {
+         vector = modelReader_.faceNormals()->at(currentTriangle);
+      }
+      else
+      {
+         vector = modelReader_.vertexNormals()->at(indexTwo);
+      }
       glNormal3f(vector->x(), vector->y(), vector->z());
       glTexCoord2f((float) textureTwo.u/modelReader_.skinWidth(),
                (float) textureTwo.v/modelReader_.skinHeight());
       glVertex3f(vertexTwo.x, vertexTwo.y, vertexTwo.z);
 
-      vector = modelReader_.vertexNormals()->at(indexThree);
+      //Point Three
+      if(displayMode_== DrawingDefines::FLAT_SHADING)
+      {
+         vector = modelReader_.faceNormals()->at(currentTriangle);
+      }
+      else
+      {
+         vector = modelReader_.vertexNormals()->at(indexThree);
+      }
       glNormal3f(vector->x(), vector->y(), vector->z());
       glTexCoord2f((float) textureThree.u/modelReader_.skinWidth(),
                (float) textureThree.v/modelReader_.skinHeight());

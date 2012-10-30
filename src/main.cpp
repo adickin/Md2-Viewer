@@ -3,12 +3,13 @@
 #include"Window.h"
 
 
-int main (int argc, char **argv) {
-    QApplication app (argc, argv);     // Create an instance of QApplication
+int main (int argc, char **argv) 
+{
+   QApplication app (argc, argv);
 
-    Window* w = new Window();       // Create an instance of Window
-    w->resize(800, 500);            // Set the window to 500x500
-    w->show();                   // Show the window
+   Window* w = new Window();
+   w->resize(1000, 750);
+   w->show();                   // Show the window
 
-    return app.exec();              // Pass control to QT
+   return app.exec();              // Pass control to QT
 }

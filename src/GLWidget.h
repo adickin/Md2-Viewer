@@ -40,6 +40,7 @@ protected:
 
 private:
    void drawVertexNormals();
+   void drawGroundSheet();
    void drawModel();
    void drawWeapon();
 
@@ -53,6 +54,7 @@ private:
 
    GLuint modelTexture_;
    GLuint weaponTexture_;
+   GLuint groundTexture_;
    DrawingDefines::Mode displayMode_;
    bool weaponLoaded_;
    bool textureLoadedForMd2Model_;

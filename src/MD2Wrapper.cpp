@@ -158,13 +158,11 @@ void MD2Wrapper::determineFaceNormals()
       VertexCoordinate vertexTwo = retrieveVertexCoordinatesAt(indexTwo);
       VertexCoordinate vertexThree = retrieveVertexCoordinatesAt(indexThree);
 
-      MathVector* vectorOne = new MathVector(vertexTwo, vertexOne);
-      MathVector* vectorTwo = new MathVector(vertexThree, vertexOne);
+      MathVector* vectorOne = new MathVector(vertexOne, vertexTwo);
+      MathVector* vectorTwo = new MathVector(vertexThree, vertexTwo);
 
       vectorOne->crossProduct(vectorTwo);
       vectorOne->normalizeVector();
-
-      //fprintf(stderr, "%f, %f, %f\n", vectorOne->x(), vectorOne->y(), vectorOne->z());
 
       faceNormals_.append(vectorOne);
       delete vectorTwo;
@@ -176,7 +174,6 @@ void MD2Wrapper::determineVertexNormals()
    QList<MathVector*> faceNormalForVertexNormalCalculation;
    for(int i = 0; i < numberOfVertices(); i++)
    {
-      VertexCoordinate vertex = retrieveVertexCoordinatesAt(i);
 
       for(int currentTriangle = 0; currentTriangle < numberOfTriangles(); currentTriangle++)
       {
@@ -185,22 +182,13 @@ void MD2Wrapper::determineVertexNormals()
          int indexThree = 0;
          retrieveTriangleVertexIndicies(currentTriangle, &indexOne,
                                               &indexTwo, &indexThree);
-         
-         VertexCoordinate vertexOne = retrieveVertexCoordinatesAt(indexOne);
-         VertexCoordinate vertexTwo = retrieveVertexCoordinatesAt(indexTwo);
-         VertexCoordinate vertexThree = retrieveVertexCoordinatesAt(indexThree);
 
-         // if(vertex.areVertexsEqual(vertexOne) ||
-         //    vertex.areVertexsEqual(vertexTwo) ||
-         //    vertex.areVertexsEqual(vertexThree))
          if(i == indexOne || i == indexTwo || i == indexThree)
          {
-            //fprintf(stderr, "added to calculation\n");
             faceNormalForVertexNormalCalculation.append(faceNormals_.at(currentTriangle));
          }
 
       }
-      //fprintf(stderr, "DONE\n");
 
       MathVector* vertexNormal = new MathVector(0, 0, 0); 
       int number = 0;
