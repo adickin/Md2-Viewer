@@ -1,7 +1,22 @@
+/*
+*********************************************************************
+*  Adam Dickin
+*  10016859
+*  CPSC 453
+*  Assignment 2
+*********************************************************************
+*/
 
 #include "MD2Wrapper.h"
 #include "MathVector.h"
 
+/*
+***************************************************************
+*
+*  constructor  
+*
+***************************************************************
+*/
 MD2Wrapper::MD2Wrapper()
 {
    md2Reader_ = new MD2();
@@ -9,6 +24,13 @@ MD2Wrapper::MD2Wrapper()
    vertexNormals_.clear();
 }
 
+/*
+***************************************************************
+*
+*  destructor  
+*
+***************************************************************
+*/
 MD2Wrapper::~MD2Wrapper()
 {
    delete md2Reader_;
@@ -18,6 +40,13 @@ MD2Wrapper::~MD2Wrapper()
    }
 }
 
+/*
+***************************************************************
+*
+*  Loads the MD2 Model  
+*
+***************************************************************
+*/
 bool MD2Wrapper::loadModelFromFile(QString& fileName)
 {
    bool success = md2Reader_->LoadModel(fileName.toAscii().constData());
@@ -68,6 +97,13 @@ QList<MathVector*>* MD2Wrapper::vertexNormals()
    return &vertexNormals_;
 }
 
+/*
+***************************************************************
+*
+*  Retrives a vertex coordinate at \a index. 
+*
+***************************************************************
+*/
 VertexCoordinate MD2Wrapper::retrieveVertexCoordinatesAt(const int index)
 {
    VertexCoordinate coordinate;
@@ -78,6 +114,13 @@ VertexCoordinate MD2Wrapper::retrieveVertexCoordinatesAt(const int index)
    return coordinate;
 }
 
+/*
+***************************************************************
+*
+*  Retrives a texture coordinate for \a index 
+*
+***************************************************************
+*/
 TextureCoordinate MD2Wrapper::retrieveTextureCoordinateAt(const int index)
 {
    TextureCoordinate coordinate;
@@ -88,6 +131,13 @@ TextureCoordinate MD2Wrapper::retrieveTextureCoordinateAt(const int index)
    return coordinate;
 }
 
+/*
+***************************************************************
+*
+*  Retrieves all the vertex index's for a triangle a \a index. 
+*
+***************************************************************
+*/
 void MD2Wrapper::retrieveTriangleVertexIndicies(const int index, int* indexOne,
                                                  int* indexTwo, int* indexThree)
 {
@@ -96,6 +146,7 @@ void MD2Wrapper::retrieveTriangleVertexIndicies(const int index, int* indexOne,
    *indexThree = md2Reader_->tris[index].index_xyz[2];
 }
 
+//retrieves all the texture indicies for a triangle
 void MD2Wrapper::retrieveTriangleTextureIndicies(const int index, int* x, int* y, int* z)
 {
    *x = md2Reader_->tris[index].index_st[0];
@@ -103,6 +154,13 @@ void MD2Wrapper::retrieveTriangleTextureIndicies(const int index, int* x, int* y
    *z = md2Reader_->tris[index].index_st[2];
 }
 
+/*
+***************************************************************
+*
+*  Determines the dimensions of the model 
+*
+***************************************************************
+*/
 void MD2Wrapper::determineDimensions()
 {
    md2ImageDimensions_.minX = 0;
@@ -144,6 +202,13 @@ void MD2Wrapper::determineDimensions()
    }
 }
 
+/*
+***************************************************************
+*
+*  Determines the face normals for the models just loaded  
+*
+***************************************************************
+*/
 void MD2Wrapper::determineFaceNormals()
 {
    for(int i = 0; i < numberOfTriangles(); ++i)
@@ -169,6 +234,13 @@ void MD2Wrapper::determineFaceNormals()
    }
 }
 
+/*
+***************************************************************
+*
+*  Determines the vertex normals for the model just loaded.  
+*
+***************************************************************
+*/
 void MD2Wrapper::determineVertexNormals()
 {
    QList<MathVector*> faceNormalForVertexNormalCalculation;

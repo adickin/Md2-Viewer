@@ -1,3 +1,11 @@
+/*
+*********************************************************************
+*  Adam Dickin
+*  10016859
+*  CPSC 453
+*  Assignment 2
+*********************************************************************
+*/
 
 #ifndef MYGLWIDGET
 #define MYGLWIDGET
@@ -10,7 +18,15 @@
 class AffineTransformer;
 class ViewChanger;
 
-
+/*
+***************************************************************
+*
+*  Main GL drawing class, contains most of the functionality to
+*  draw models, weapons, vertex's.  Class also contains the functionality
+*  to texture models as well as lighting  
+*
+***************************************************************
+*/
 class GLWidget : public QGLWidget 
 {
    Q_OBJECT

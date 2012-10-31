@@ -1,3 +1,11 @@
+/*
+*********************************************************************
+*  Adam Dickin
+*  10016859
+*  CPSC 453
+*  Assignment 2
+*********************************************************************
+*/
 
 #ifndef WINDOW_H
 #define WINDOW_H
@@ -14,7 +22,9 @@ class QGLWidget;
 /*
 ***************************************************************
 *
-*   
+*  Main window of the application, sets up all the UI elements
+*  as well as the glWidget_.  Sets up all neccasary signals
+*  and slots.
 *
 ***************************************************************
 */

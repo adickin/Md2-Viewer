@@ -12,6 +12,13 @@
 
 #include <QString>
 
+/*
+***************************************************************
+*
+*  Area that holds general enums or structs used throughout the application 
+*
+***************************************************************
+*/
 namespace DrawingDefines
 {
    enum Mode

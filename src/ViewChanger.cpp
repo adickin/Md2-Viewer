@@ -13,6 +13,13 @@
 #include "SideBar.h"
 #include "GL/glut.h"
 
+/*
+***************************************************************
+*
+*  Constructor 
+*
+***************************************************************
+*/
 ViewChanger::ViewChanger(SideBar* sideBar)
 {
    sideBar_ = sideBar;
@@ -32,11 +39,25 @@ ViewChanger::ViewChanger(SideBar* sideBar)
    sideBar_->ui_.yOrientationSlider->setValue((int)viewOrientationValues_.yValue);
 }
 
+/*
+***************************************************************
+*
+*  Destructor 
+*
+***************************************************************
+*/
 ViewChanger::~ViewChanger()
 {
    sideBar_ = NULL;
 }
 
+/*
+***************************************************************
+*
+*  Sets the view position by calling gluLookAt. 
+*
+***************************************************************
+*/
 void ViewChanger::setViewPosition()
 {
    gluLookAt(viewDirectionValues_.xValue, viewDirectionValues_.yValue, viewDirectionValues_.zValue,
@@ -44,17 +65,39 @@ void ViewChanger::setViewPosition()
              viewOrientationValues_.xValue, viewOrientationValues_.yValue, viewOrientationValues_.zValue);
 }
 
+/*
+***************************************************************
+*
+*  Sets the z Direction Value to be the size of the model so that
+*  it fits nicely. 
+*
+***************************************************************
+*/
 void ViewChanger::setDirectionZValue(float value)
 {
    viewDirectionValues_.zValue = value;
    sideBar_->ui_.zDirectionSlider->setValue((int)viewDirectionValues_.zValue);
 }
 
+/*
+***************************************************************
+*
+*  Sets view to be in perspective mode 
+*
+***************************************************************
+*/
 void ViewChanger::setPerspective(int windowWidth, int windowHeight)
 {
    gluPerspective(60, (GLfloat)windowWidth/windowHeight, 1.0, 1000.0);
 }
 
+/*
+***************************************************************
+*
+*  Sets view to be in parallel mode. 
+*
+***************************************************************
+*/
 void ViewChanger::setParallel(Dimensions modelDimensions)
 {
    glOrtho(modelDimensions.minX, modelDimensions.maxX
@@ -65,7 +108,8 @@ void ViewChanger::setParallel(Dimensions modelDimensions)
 /*
 ***************************************************************
 *
-*  Center  
+*  Updates the view location of the camera based on what is
+*  currently selected in the location sliders
 *
 ***************************************************************
 */
@@ -94,7 +138,8 @@ void ViewChanger::updateViewLocationOfCamera()
 /*
 ***************************************************************
 *
-*  EYE  
+*  Updates the view direction of the camera based on what is
+*  currently selected in the direction sliders
 *
 ***************************************************************
 */
@@ -123,7 +168,8 @@ void ViewChanger::updateViewDirectionOfCamera()
 /*
 ***************************************************************
 *
-*  view orientation  
+*  Updates the view orientation of the camera based on what is
+*  currently selected in the orientation sliders
 *
 ***************************************************************
 */
@@ -149,6 +195,13 @@ void ViewChanger::updateViewOrientationOfCamera()
    emit redraw();
 }
 
+/*
+***************************************************************
+*
+*  Resets the view 
+*
+***************************************************************
+*/
 void ViewChanger::resetView()
 {
    viewDirectionValues_.xValue = 0;

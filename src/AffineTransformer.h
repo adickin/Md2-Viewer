@@ -14,6 +14,13 @@
 
 class SideBar;
 
+/*
+***************************************************************
+*
+*  Class that performs all of teh affine transformations  
+*
+***************************************************************
+*/
 class AffineTransformer : public QObject
 {
    Q_OBJECT

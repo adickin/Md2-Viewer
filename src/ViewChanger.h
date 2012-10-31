@@ -12,6 +12,13 @@
 
 class SideBar;
 
+/*
+***************************************************************
+*
+*  Contains all functions related to the camera changes. 
+*
+***************************************************************
+*/
 class ViewChanger : public QObject
 {
    Q_OBJECT

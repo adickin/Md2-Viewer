@@ -1,3 +1,11 @@
+/*
+*********************************************************************
+*  Adam Dickin
+*  10016859
+*  CPSC 453
+*  Assignment 2
+*********************************************************************
+*/
 
 #include <QStringList>
 
@@ -7,6 +15,13 @@
 #include "AffineTransformer.h"
 #include "ViewChanger.h"
 
+/*
+***************************************************************
+*
+*  Constructor for Main Widnw. 
+*
+***************************************************************
+*/
 Window::Window(QWidget *parent) 
 :QMainWindow(parent) 
 {
@@ -163,6 +178,13 @@ void Window::setupSignalsAndSlots()
       glWidget_, SLOT(setProjectionType(const QString&)));
 }
 
+/*
+***************************************************************
+*
+* Opens the file browser to pick MD2 Models  
+*
+***************************************************************
+*/
 void Window::openMd2ModelFileBrowser()
 {
    QString fileName = QFileDialog::getOpenFileName(this, QString("selectMd2File")
@@ -176,6 +198,13 @@ void Window::openMd2ModelFileBrowser()
    emit weaponTextureLoaded(QString("NONE"));
 }
 
+/*
+***************************************************************
+*
+* Opens the file browser to pick Textures for Models  
+*
+***************************************************************
+*/
 void Window::openModelTextureFileBrowser()
 {
    QString fileName = QFileDialog::getOpenFileName(this, QString("selectTextureFile"), QString("./")
@@ -186,6 +215,13 @@ void Window::openModelTextureFileBrowser()
    emit modelTextureFileOpened(list.at(list.size()-1));
 }
 
+/*
+***************************************************************
+*
+* Opesn a file brower to pick a MD2 Weapon Model  
+*
+***************************************************************
+*/
 void Window::openWeaponFileBrowser()
 {
    QString fileName = QFileDialog::getOpenFileName(this, QString("select Weapon File")
@@ -197,6 +233,13 @@ void Window::openWeaponFileBrowser()
    emit weaponTextureLoaded(QString("NONE"));
 }
 
+/*
+***************************************************************
+*
+* opens a file browser to pick a texture for a Md2 weapon model  
+*
+***************************************************************
+*/
 void Window::openWeaponTextureFileBrowser()
 {
    QString fileName = QFileDialog::getOpenFileName(this, QString("Select Weapon Texture"), QString("./")
@@ -207,6 +250,13 @@ void Window::openWeaponTextureFileBrowser()
    emit weaponTextureLoaded(list.at(list.size()-1));
 }
 
+/*
+***************************************************************
+*
+* Exits the application  
+*
+***************************************************************
+*/
 void Window::exitApplication(bool exit)
 {
    QApplication::exit(exit);

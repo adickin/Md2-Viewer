@@ -1,18 +1,48 @@
+/*
+*********************************************************************
+*  Adam Dickin
+*  10016859
+*  CPSC 453
+*  Assignment 2
+*********************************************************************
+*/
 
 #include "TextureManager.h"
 #include <GL/glut.h>
 #include "pcx.h"
 
+/*
+***************************************************************
+*
+*  constructor  
+*
+***************************************************************
+*/
 TextureManager::TextureManager()
 {
 
 }
 
+/*
+***************************************************************
+*
+*  destructor 
+*
+***************************************************************
+*/
 TextureManager::~TextureManager()
 {
 
 }
 
+/*
+***************************************************************
+*
+* Takes in a filename that is either a bmp file or a PCX file
+* and uses the correct loader for the particular filetype.  
+*
+***************************************************************
+*/
 GLuint TextureManager::loadTextureFromFile(const QString& fileName)
 {
    GLuint texture;

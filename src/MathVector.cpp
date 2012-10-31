@@ -9,6 +9,13 @@
 #include "MathVector.h"
 #include "math.h"
 
+/*
+***************************************************************
+*
+* constructor  
+*
+***************************************************************
+*/
 MathVector::MathVector(float x, float y, float z)
 :isUnitVector_(false)
 ,x_(x)
@@ -34,11 +41,26 @@ MathVector::MathVector(VertexCoordinate one, VertexCoordinate two)
    z_ = two.z - one.z;
 }
 
+/*
+***************************************************************
+*
+*  destructor 
+*
+***************************************************************
+*/
 MathVector::~MathVector()
 {
    //does nothing
 }
 
+/*
+***************************************************************
+*
+*  Performs a cross product with this vector and \a vector and loads
+*  the result into this. 
+*
+***************************************************************
+*/
 void MathVector::crossProduct(const MathVector* vector)
 {
    float tempX = ((y_ * vector->z_) - (z_ * vector->y_));
@@ -50,6 +72,13 @@ void MathVector::crossProduct(const MathVector* vector)
    z_ = tempZ;
 }
 
+/*
+***************************************************************
+*
+*  Normalizes a vector so that its magnitude is 1.  
+*
+***************************************************************
+*/
 void MathVector::normalizeVector()
 {
    float magnitude = sqrt((x_ * x_) + (y_ * y_) + (z_ * z_));

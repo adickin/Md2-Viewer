@@ -32,6 +32,14 @@ struct Dimensions
    int maxZ;
 };
 
+/*
+***************************************************************
+*
+*  Wrapper around the provided md2 reader that is much more
+*  human readable.  
+*
+***************************************************************
+*/
 class MD2Wrapper
 {
 public:

@@ -35,7 +35,7 @@
    <item>
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="pageOne">
       <property name="geometry">
@@ -66,7 +66,7 @@
              <item>
               <widget class="QLabel" name="currentMd2File">
                <property name="text">
-                <string>Current Model: somthing.md2</string>
+                <string>NONE</string>
                </property>
               </widget>
              </item>
@@ -87,7 +87,7 @@
              <item>
               <widget class="QLabel" name="currentTextureLabel">
                <property name="text">
-                <string>Current Texture: </string>
+                <string>NONE</string>
                </property>
               </widget>
              </item>
@@ -108,7 +108,7 @@
              <item>
               <widget class="QLabel" name="currentWeapon">
                <property name="text">
-                <string>Current Model: somthing.md2</string>
+                <string>NONE</string>
                </property>
               </widget>
              </item>
@@ -129,7 +129,7 @@
              <item>
               <widget class="QLabel" name="currentWeaponTextureLabel">
                <property name="text">
-                <string>Current Texture: </string>
+                <string>NONE</string>
                </property>
               </widget>
              </item>
@@ -593,120 +593,10 @@
                <item>
                 <widget class="QLabel" name="label_43">
                  <property name="text">
-                  <string>All:</string>
+                  <string>Rotation Via Trackball</string>
                  </property>
                  <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_44">
-                 <property name="text">
-                  <string>X:</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_45">
-                 <property name="text">
-                  <string>Y:</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_46">
-                 <property name="text">
-                  <string>Z:</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QVBoxLayout" name="verticalLayout_35">
-               <item>
-                <widget class="QSlider" name="allRotationSlider">
-                 <property name="minimum">
-                  <number>-180</number>
-                 </property>
-                 <property name="maximum">
-                  <number>180</number>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="tickPosition">
-                  <enum>QSlider::TicksBelow</enum>
-                 </property>
-                 <property name="tickInterval">
-                  <number>180</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSlider" name="xRotationSlider">
-                 <property name="minimum">
-                  <number>-180</number>
-                 </property>
-                 <property name="maximum">
-                  <number>180</number>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="tickPosition">
-                  <enum>QSlider::TicksBelow</enum>
-                 </property>
-                 <property name="tickInterval">
-                  <number>180</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSlider" name="yRotationSlider">
-                 <property name="minimum">
-                  <number>-180</number>
-                 </property>
-                 <property name="maximum">
-                  <number>180</number>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="tickPosition">
-                  <enum>QSlider::TicksBelow</enum>
-                 </property>
-                 <property name="tickInterval">
-                  <number>180</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSlider" name="zRotationSlider">
-                 <property name="minimum">
-                  <number>-180</number>
-                 </property>
-                 <property name="maximum">
-                  <number>180</number>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="tickPosition">
-                  <enum>QSlider::TicksBelow</enum>
-                 </property>
-                 <property name="tickInterval">
-                  <number>180</number>
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                  </property>
                 </widget>
                </item>

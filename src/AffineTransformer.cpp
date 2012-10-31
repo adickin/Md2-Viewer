@@ -16,6 +16,13 @@
 #include "MathVector.h"
 
 
+/*
+***************************************************************
+*
+* Constructor  
+*
+***************************************************************
+*/
 AffineTransformer::AffineTransformer(SideBar* sideBar)
 {
    sideBar_ = sideBar;
@@ -33,6 +40,13 @@ AffineTransformer::AffineTransformer(SideBar* sideBar)
 
 }
 
+/*
+***************************************************************
+*
+*  Destructor 
+*
+***************************************************************
+*/
 AffineTransformer::~AffineTransformer()
 {
    sideBar_ = NULL;
@@ -117,6 +131,14 @@ void AffineTransformer::updateScalingOnModel()
    emit redraw();
 }
 
+/*
+***************************************************************
+*
+*  Sets the values in the transformationValues_ according to whats
+*  the current value in each slider  
+*
+***************************************************************
+*/
 void AffineTransformer::updateTranslationOnModel()
 {
    if(NULL != this->sender())
@@ -197,6 +219,13 @@ void AffineTransformer::rollBallMoved(int valueChange)
    emit redraw();
 }
 
+/*
+***************************************************************
+*
+*  Resets all trasnformations done on the model 
+*
+***************************************************************
+*/
 void AffineTransformer::resetTransformations()
 {
    scalingValues_.xValue = 1;
@@ -214,14 +243,35 @@ void AffineTransformer::resetTransformations()
    sideBar_->ui_.xTranslationSlider->setValue((int)translationValues_.xValue);
    sideBar_->ui_.yTranslationSlider->setValue((int)translationValues_.yValue);
    sideBar_->ui_.zTranslationSlider->setValue((int)translationValues_.zValue);
+
+   glPushMatrix();
+      glLoadIdentity();
+      glGetFloatv(GL_MODELVIEW_MATRIX, matrix_);
+   glPopMatrix();
+
+   emit redraw();
 }
 
+/*
+***************************************************************
+*
+*  Sets the width/height of the current GLWidget. 
+*
+***************************************************************
+*/
 void AffineTransformer::setWidthAndHeight(int width, int height)
 {
    width_ = width;
    height_ = height;
 }
 
+/*
+***************************************************************
+*
+*  Finds the trackpoint for the trackball rotation  
+*
+***************************************************************
+*/
 void AffineTransformer::findTrackPoint(int x, int y, double& sphereX, double& sphereY, double& sphereZ)
 {
    sphereX = ((double)x/(double)width_) * 2.0 - 1.0;
@@ -241,7 +291,7 @@ void AffineTransformer::findTrackPoint(int x, int y, double& sphereX, double& sp
 /*
 ***************************************************************
 *
-*
+*  Called for a mouse press event
 *
 ***************************************************************
 */
@@ -250,6 +300,13 @@ void AffineTransformer::mousePressEvent(QMouseEvent* event)
    findTrackPoint(event->x(), event->y(), oldX_, oldY_, oldZ_);
 }
 
+/*
+***************************************************************
+*
+*  Called for a mouse move event 
+*
+***************************************************************
+*/
 void AffineTransformer::mouseMoveEvent(QMouseEvent* event)
 {
    double newX, newY, newZ;
@@ -291,6 +348,13 @@ void AffineTransformer::mouseMoveEvent(QMouseEvent* event)
    emit redraw();
 }
 
+/*
+***************************************************************
+*
+*  Returns the current rotation matrix 
+*
+***************************************************************
+*/
 GLfloat* AffineTransformer::matrix()
 {
    static bool happened = false;

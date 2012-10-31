@@ -1,14 +1,31 @@
+/*
+*********************************************************************
+*  Adam Dickin
+*  10016859
+*  CPSC 453
+*  Assignment 2
+*********************************************************************
+*/
+
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QString>
-#include "GLWidget.h"
 #include <GL/glut.h>
+
+#include "GLWidget.h"
 #include "BMP.h"
 #include "MathVector.h"
 #include "math.h"
 #include "AffineTransformer.h"
 #include "ViewChanger.h"
 
+/*
+***************************************************************
+*
+* Constructor for GLWidget  
+*
+***************************************************************
+*/
 GLWidget::GLWidget(AffineTransformer* transformer, ViewChanger* viewChanger, QWidget *parent) 
    :QGLWidget (parent) 
    ,displayMode_(DrawingDefines::WIREFRAME)
@@ -26,8 +43,25 @@ GLWidget::GLWidget(AffineTransformer* transformer, ViewChanger* viewChanger, QWi
    setMinimumSize(500, 500);
 }
 
-GLWidget::~GLWidget() { }
+/*
+***************************************************************
+*
+* Destructor  
+*
+***************************************************************
+*/
+GLWidget::~GLWidget() 
+{
+   delete texManager_;
+}
 
+/*
+***************************************************************
+*
+* Called once when the GLWidget is created.
+*
+***************************************************************
+*/
 void GLWidget::initializeGL() 
 {
    glEnable(GL_DEPTH_TEST);
@@ -35,19 +69,15 @@ void GLWidget::initializeGL()
 
    glClearColor(0.3,0.6,0.5,0.5);
    enableLighting();
-   
-   //load the ground texture only once.
-   QString groundTexturePath("./src/ground.bmp");
-   groundTexture_ = texManager_->loadTextureFromFile(groundTexturePath);
-   
-   //temporary todo
-   QString fileName("./models-5/sephiroth/sephiroth.md2");
-   openModelFile(fileName);
-   
-   QString fileName2("./models-5/sephiroth/sephiroth.bmp");
-   openModelTextureFile(fileName2);
 }
 
+/*
+***************************************************************
+*
+* Enables GL lighting effects  
+*
+***************************************************************
+*/
 void GLWidget::enableLighting()
 {
    glEnable(GL_LIGHTING);
@@ -60,6 +90,13 @@ void GLWidget::enableLighting()
    glLightfv(GL_LIGHT0, GL_POSITION, position);
 }
 
+/*
+***************************************************************
+*
+*  Called everytime the GL window is resized.  
+*
+***************************************************************
+*/
 void GLWidget::resizeGL(int width, int height) 
 {
    windowWidth_ = width;
@@ -68,6 +105,15 @@ void GLWidget::resizeGL(int width, int height)
    glViewport(0,0,width, height);
 }
 
+/*
+***************************************************************
+*
+*  Function called everytime updateGL() is called.  Draws the
+*  models with textures, as well as vertex's, ground sheets if 
+*  enabled.  
+*
+***************************************************************
+*/
 void GLWidget::paintGL() 
 {
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -128,6 +174,13 @@ void GLWidget::paintGL()
    glFlush();
 }
 
+/*
+***************************************************************
+*
+*  Called whenever a mouse button is clicked  
+*
+***************************************************************
+*/
 void GLWidget::mousePressEvent(QMouseEvent *event) 
 {
    if (event->button() == Qt::LeftButton) 
@@ -136,6 +189,13 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
    }
 }
 
+/*
+***************************************************************
+*
+*  Called whenever a mouse moves on top of the widget  
+*
+***************************************************************
+*/
 void GLWidget::mouseMoveEvent(QMouseEvent *event) 
 {
    transformer_->mouseMoveEvent(event);
@@ -143,6 +203,13 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
    updateGL();
 }
 
+/*
+***************************************************************
+*
+*   Called whenever a keyboard key is pressed
+*
+***************************************************************
+*/
 void GLWidget::keyPressEvent(QKeyEvent *event) 
 {
    if (event->key() == Qt::Key_Q) 
@@ -151,6 +218,14 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
    }
 }
 
+/*
+***************************************************************
+*
+*  Called whever the mouse wheel is moved forward or back,
+*  performs uniform scaling on the model.  
+*
+***************************************************************
+*/
 void GLWidget::wheelEvent(QWheelEvent *event) 
 {
    if (event->orientation() == Qt::Vertical) 
@@ -170,6 +245,13 @@ void GLWidget::wheelEvent(QWheelEvent *event)
    }
 }
 
+/*
+***************************************************************
+*
+*  Opens a MD2 file for a model so that they can be drawn  
+*
+***************************************************************
+*/
 void GLWidget::openModelFile(QString& filePath)
 {
    modelReader_.loadModelFromFile(filePath);
@@ -178,6 +260,14 @@ void GLWidget::openModelFile(QString& filePath)
    viewChanger_->setDirectionZValue((modelReader_.dimensions().maxZ+fabs(modelReader_.dimensions().minZ))*2);
 }
 
+/*
+***************************************************************
+*
+*  Opens a texture file for a model, sets the modelTexture to
+*  bind while drawing the model
+*
+***************************************************************
+*/
 void GLWidget::openModelTextureFile(QString& filePath)
 {     
    glDeleteTextures(1, &modelTexture_);
@@ -185,6 +275,13 @@ void GLWidget::openModelTextureFile(QString& filePath)
    textureLoadedForMd2Model_ = true;
 }
 
+/*
+***************************************************************
+*
+* Opens a MD2 file for a weapon model so taht it can be drawn  
+*
+***************************************************************
+*/
 void GLWidget::openWeaponFile(QString& filePath)
 {
    weaponReader_.loadModelFromFile(filePath);
@@ -192,6 +289,14 @@ void GLWidget::openWeaponFile(QString& filePath)
    weaponLoaded_ = true;
 }
 
+/*
+***************************************************************
+*
+*  Opens a texture for a weapon model, sets the weaponTexture
+*  to bind while drawing the weapon  
+*
+***************************************************************
+*/
 void GLWidget::openWeaponTextureFile(QString& filePath)
 {     
    glDeleteTextures(1, &weaponTexture_);
@@ -199,6 +304,13 @@ void GLWidget::openWeaponTextureFile(QString& filePath)
    textureLoadedForWeapon_ = true;
 }
 
+/*
+***************************************************************
+*
+*  Changes teh display mode between wireframe, flat, or smooth  
+*
+***************************************************************
+*/
 void GLWidget::changeDisplayMode(const QString& newMode)
 {
    if(DrawingDefines::WIREFRAME_STRING == newMode)
@@ -217,32 +329,72 @@ void GLWidget::changeDisplayMode(const QString& newMode)
    updateGL();
 }
 
+/*
+***************************************************************
+*
+*  Sets if the vertex normals will be drawn according to the 
+*  \a state.  
+*
+***************************************************************
+*/
 void GLWidget::showVertexNormals(int state)
 {
    drawVertexNormals_ = (state == (int)Qt::Checked);
    updateGL();
 }
 
+/*
+***************************************************************
+*
+*  Sets if the face normals will be drawn according to the 
+*  \a state.  
+*
+***************************************************************
+*/
 void GLWidget::showFaceNormals(int state)
 {
    drawFaceNormals_ = (state == (int)Qt::Checked);
    updateGL();
 }
 
+/*
+***************************************************************
+*
+*  Sets if the ground sheet will be drawn according to the 
+*  \a state.  
+*
+***************************************************************
+*/
 void GLWidget::showGroundSheet(int state)
 {
    drawGroundSheet_ = (state == (int)Qt::Checked);
    updateGL();
 }
 
+/*
+***************************************************************
+*
+*  Sets the projection type based on \a selection 
+*
+***************************************************************
+*/
 void GLWidget::setProjectionType(const QString& selection)
 {
    projectionSelected_ = selection;
    updateGL();
 }
 
+/*
+***************************************************************
+*
+*  Draws the ground the model stands on  
+*
+***************************************************************
+*/
 void GLWidget::drawGroundSheet()
 {
+   QString groundTexturePath("./src/ground.bmp");
+   groundTexture_ = texManager_->loadTextureFromFile(groundTexturePath);
    glEnable(GL_TEXTURE_2D);
    glDisable(GL_LIGHTING);
    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -268,6 +420,13 @@ void GLWidget::drawGroundSheet()
    glEnable(GL_LIGHTING);
 }
 
+/*
+***************************************************************
+*
+*  Draws the model based on the opened MD2 model file 
+*
+***************************************************************
+*/
 void GLWidget::drawModel()
 {
    switch(displayMode_)
@@ -379,6 +538,13 @@ void GLWidget::drawModel()
    }
 }
 
+/*
+***************************************************************
+*
+*  Draws the weapon model that is currently opened in the weaponReader_ 
+*
+***************************************************************
+*/
 void GLWidget::drawWeapon()
 {
    if(textureLoadedForWeapon_)
@@ -465,6 +631,13 @@ void GLWidget::drawWeapon()
    glDisable(GL_TEXTURE_2D);
 }
 
+/*
+***************************************************************
+*
+* Draws the vertex normals on the model  
+*
+***************************************************************
+*/
 void GLWidget::drawModelVertexNormals()
 {
    glDisable(GL_LIGHTING);
@@ -488,6 +661,13 @@ void GLWidget::drawModelVertexNormals()
    }
 }
 
+/*
+***************************************************************
+*
+* Draws the vertex normals on the weapon model  
+*
+***************************************************************
+*/
 void GLWidget::drawWeaponVertexNormals()
 {
    glDisable(GL_LIGHTING);
@@ -507,6 +687,13 @@ void GLWidget::drawWeaponVertexNormals()
    glEnable(GL_LIGHTING);
 }
 
+/*
+***************************************************************
+*
+*  Draws the face normals on the model 
+*
+***************************************************************
+*/
 void GLWidget::drawModelFaceNormals()
 {
    glDisable(GL_LIGHTING);
@@ -547,6 +734,13 @@ void GLWidget::drawModelFaceNormals()
    }
 }
 
+/*
+***************************************************************
+*
+* Draws the face normals on the weapon model  
+*
+***************************************************************
+*/
 void GLWidget::drawWeaponFaceNormals()
 {
    glDisable(GL_LIGHTING);
