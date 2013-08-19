@@ -1,11 +1,3 @@
-/*
-*********************************************************************
-*  Adam Dickin
-*  10016859
-*  CPSC 453
-*  Assignment 2
-*********************************************************************
-*/
 #include <QObject>
 #include <QMouseEvent>
 #include <QGLWidget>
@@ -17,7 +9,7 @@ class SideBar;
 /*
 ***************************************************************
 *
-*  Class that performs all of teh affine transformations  
+*  Class that performs all of the affine transformations  
 *
 ***************************************************************
 */

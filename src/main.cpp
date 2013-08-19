@@ -1,6 +1,6 @@
-#include<QApplication>
-#include"GLWidget.h"
-#include"Window.h"
+#include <QApplication>
+#include "GLWidget.h"
+#include "Window.h"
 
 /*
 ***************************************************************
